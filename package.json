@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "postbuild": "cpy README.md dist",
+    "postbuild": "cpy README.md dist && ts-node ./build/fix-special-const.ts",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -43,6 +43,7 @@
     "eslint": "^8.10.0",
     "ng-packagr": "^13.0.0",
     "prettier": "^2.5.1",
+    "ts-node": "^10.6.0",
     "typescript": "~4.5.2"
   }
 }
