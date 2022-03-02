@@ -1,0 +1,6 @@
+{
+  "extends": ["@awdware/eslint-config-angular"],
+  "parserOptions": {
+    "project": "tsconfig.json"
+  }
+}

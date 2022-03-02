@@ -1,0 +1,48 @@
+{
+  "name": "ng-dynamic-mf",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "postbuild": "cpy README.md dist",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular-architects/module-federation": "^14.1.1",
+    "@angular/animations": "~13.2.0",
+    "@angular/common": "~13.2.0",
+    "@angular/compiler": "~13.2.0",
+    "@angular/core": "~13.2.0",
+    "@angular/forms": "~13.2.0",
+    "@angular/platform-browser": "~13.2.0",
+    "@angular/platform-browser-dynamic": "~13.2.0",
+    "@angular/router": "~13.2.0",
+    "rxjs": "~7.5.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.11.4"
+  },
+  "prettier": "@awdware/prettier-config",
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~13.2.5",
+    "@angular-eslint/builder": "^13.1.0",
+    "@angular-eslint/eslint-plugin": "^13.1.0",
+    "@angular-eslint/eslint-plugin-template": "^13.1.0",
+    "@angular-eslint/template-parser": "^13.1.0",
+    "@angular/cli": "~13.2.5",
+    "@angular/compiler-cli": "~13.2.0",
+    "@awdware/eslint-config-angular": "^1.0.1",
+    "@awdware/eslint-config-base": "^1.0.0",
+    "@awdware/prettier-config": "^0.0.2",
+    "@types/node": "^12.11.1",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
+    "cpy-cli": "^4.0.0",
+    "eslint": "^8.10.0",
+    "ng-packagr": "^13.0.0",
+    "prettier": "^2.5.1",
+    "typescript": "~4.5.2"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "ng-dynamic-mf": {
+      "projectType": "library",
+      "root": "projects/ng-dynamic-mf",
+      "sourceRoot": "projects/ng-dynamic-mf/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ng-dynamic-mf/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ng-dynamic-mf/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ng-dynamic-mf/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        }
+      }
+    }
+  },
+  "defaultProject": "ng-dynamic-mf"
+}
