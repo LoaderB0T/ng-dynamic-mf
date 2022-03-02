@@ -1,4 +1,4 @@
-![npm](https://img.shields.io/npm/v/ng-dynamic-mf?color=%2300d26a&style=for-the-badge)
+[![npm](https://img.shields.io/npm/v/ng-dynamic-mf?color=%2300d26a&style=for-the-badge)](https://www.npmjs.com/package/ng-dynamic-mf)
 
 # ng-dynamic-mf
 
@@ -7,7 +7,7 @@ Truly dynamic modules at runtime with Module Federation!
 ## Motivation 💥
 
 Module Federation gets a lot of attention lately - and rightfully so!
-For Angular there is the awesome [Module Federation Plugin](https://github.com/angular-architects/module-federation-plugin) plugin.
+For Angular there is the awesome [Module Federation Plugin](https://github.com/angular-architects/module-federation-plugin).
 ng-dynamic-mf builds upon this plugin and aims to bring the modularity of Module Federation in Angular to the next level by providing methods to easily load modules at runtime.
 
 ## Features 🔥
