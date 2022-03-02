@@ -1,3 +1,5 @@
+![npm](https://img.shields.io/npm/v/ng-dynamic-mf?color=%2300d26a&style=for-the-badge)
+
 # ng-dynamic-mf
 
 Truly dynamic modules at runtime with Module Federation!
