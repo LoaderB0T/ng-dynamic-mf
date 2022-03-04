@@ -1,4 +1,4 @@
-import { environment, Environment, initializeEnvironment } from './environment';
+import { environment, Environment, initializeEnvironment } from '../environment';
 import { loadModule } from './load-module';
 import { loadedModules } from './loaded-modules';
 

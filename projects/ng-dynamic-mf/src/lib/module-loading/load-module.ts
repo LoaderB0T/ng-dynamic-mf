@@ -1,6 +1,6 @@
 import { loadRemoteModule } from '@angular-architects/module-federation';
-import { basePaths } from './resource-map/base-path';
-import { environment } from './environment';
+import { basePaths } from '../resource-map/base-path';
+import { environment } from '../environment';
 import { ModuleDefinition } from './load-modules';
 import { loadedModules } from './loaded-modules';
 
