@@ -1,4 +1,10 @@
 const fs = require('fs');
 
-const content = fs.readFileSync(`${__dirname}/loaded-modules.d.ts`, 'utf8');
-fs.writeFileSync(`${__dirname}/../dist/lib/loaded-modules.d.ts`, content);
+const srcPath = `${__dirname}/loaded-modules.d.ts`;
+const destPath = `${__dirname}/../dist/lib/module-loading/loaded-modules.d.ts`;
+
+const content = fs.readFileSync(srcPath, 'utf8');
+if (!fs.existsSync(destPath)) {
+  throw new Error('Destination file does not exist (did the path change?)');
+}
+fs.writeFileSync(destPath, content);
