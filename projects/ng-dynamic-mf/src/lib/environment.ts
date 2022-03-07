@@ -22,7 +22,7 @@ export const envValidator = (defaultEnvironment: Environment) => {
 // @internal
 export const initializeEnvironment = (env: Environment) => {
   if (!env.production) {
-    (window as any).__gah__env = env;
+    (window as any).__ng_dynamic_mf_env__ = env;
   }
   Object.keys(env).forEach(key => {
     environment[key] = env[key];
