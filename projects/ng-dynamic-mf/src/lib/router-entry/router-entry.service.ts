@@ -18,7 +18,6 @@ export class RouterEntryService {
     if (!foundOutlet) {
       throw new Error(`Could not find outlet "${outletName}" in router config.`);
     }
-    foundOutlet.children ??= [];
     foundOutlet.children = [...foundOutlet.children!, ...routeConfig];
     this._router.resetConfig(hostRoutes);
   }
