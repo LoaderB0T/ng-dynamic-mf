@@ -1,6 +1,5 @@
 [![npm](https://img.shields.io/npm/v/ng-dynamic-mf?color=%2300d26a&style=for-the-badge)](https://www.npmjs.com/package/ng-dynamic-mf)
-[![LGTM Grade](https://img.shields.io/lgtm/grade/javascript/github/LoaderB0T/ng-dynamic-mf?label=Code%20Quality&style=for-the-badge)](https://lgtm.com/projects/g/LoaderB0T/ng-dynamic-mf/?mode=list)
-[![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/LoaderB0T/ng-dynamic-mf?style=for-the-badge)](https://lgtm.com/projects/g/LoaderB0T/ng-dynamic-mf/?mode=list)
+[![Sonar Quality Gate](https://img.shields.io/sonar/quality_gate/LoaderB0T_ng-dynamic-mf?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge)](https://sonarcloud.io/summary/new_code?id=LoaderB0T_ng-dynamic-mf)
 
 # ng-dynamic-mf
 
