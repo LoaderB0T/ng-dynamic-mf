@@ -60,3 +60,4 @@ Janik Schumacher - [@LoaderB0T](https://twitter.com/LoaderB0T) - [linkedin](http
 Project Link: [https://github.com/LoaderB0T/ng-dynamic-module-federation](https://github.com/LoaderB0T/ng-dynamic-module-federation)
 
 [module-federation-plugin-url]: https://github.com/angular-architects/module-federation-plugin
+
