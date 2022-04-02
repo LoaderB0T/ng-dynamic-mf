@@ -1,4 +1,5 @@
 [![npm](https://img.shields.io/npm/v/ng-dynamic-mf?color=%2300d26a&style=for-the-badge)](https://www.npmjs.com/package/ng-dynamic-mf)
+[![Sonar Quality Gate](https://img.shields.io/sonar/quality_gate/LoaderB0T_ng-dynamic-mf?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge)](https://sonarcloud.io/summary/new_code?id=LoaderB0T_ng-dynamic-mf)
 
 # ng-dynamic-mf
 
@@ -59,3 +60,4 @@ Janik Schumacher - [@LoaderB0T](https://twitter.com/LoaderB0T) - [linkedin](http
 Project Link: [https://github.com/LoaderB0T/ng-dynamic-module-federation](https://github.com/LoaderB0T/ng-dynamic-module-federation)
 
 [module-federation-plugin-url]: https://github.com/angular-architects/module-federation-plugin
+
