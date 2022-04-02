@@ -10,8 +10,6 @@ import { TranslationSet, TranslationType } from './translations.type';
 export class DynamicTranslationService {
   private _translateService: TranslateService | null = null;
 
-  constructor() {}
-
   public setTranslateService(translateService: TranslateService): void {
     this._translateService = translateService;
   }
