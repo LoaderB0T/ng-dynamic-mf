@@ -1,6 +1,12 @@
 {
   "name": "ng-dynamic-mf",
+  "description": "Truly dynamic modules at runtime with Module Federation",
   "version": "0.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Janik Schumacher (LoaderB0T)",
+    "url": "https://awdware.de"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
