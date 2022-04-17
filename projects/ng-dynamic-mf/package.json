@@ -1,18 +1,16 @@
 {
   "name": "ng-dynamic-mf",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "peerDependencies": {
     "@angular/common": "^13.2.0",
     "@angular/core": "^13.2.0",
     "@angular-architects/module-federation": ">=14.0.0",
-    "@ngx-translate/core": ">=14.0.0"
+    "@ngx-translate/core": ">=14.0.0",
+    "tslib": "^2.3.0"
   },
   "peerDependenciesMeta": {
     "@ngx-translate/core": {
       "optional": true
     }
-  },
-  "dependencies": {
-    "tslib": "^2.3.0"
   }
 }
