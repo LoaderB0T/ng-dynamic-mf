@@ -5,7 +5,9 @@
     "@angular/common": "^13.2.0",
     "@angular/core": "^13.2.0",
     "@angular-architects/module-federation": ">=14.0.0",
-    "@ngx-translate/core": ">=14.0.0",
+    "@ngx-translate/core": ">=14.0.0"
+  },
+  "dependencies": {
     "tslib": "^2.3.0"
   },
   "peerDependenciesMeta": {
