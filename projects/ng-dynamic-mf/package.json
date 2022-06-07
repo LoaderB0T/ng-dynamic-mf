@@ -2,8 +2,8 @@
   "name": "ng-dynamic-mf",
   "version": "1.0.0",
   "peerDependencies": {
-    "@angular/common": "^13.2.0",
-    "@angular/core": "^13.2.0",
+    "@angular/common": ">=13.2.0",
+    "@angular/core": ">=13.2.0",
     "@angular-architects/module-federation": ">=14.0.0",
     "@ngx-translate/core": ">=14.0.0"
   },
