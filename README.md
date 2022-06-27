@@ -105,7 +105,7 @@ or
 
 (Mind that the `url`s must be absolute, not relative and end with a slash).
 
-You also need to provide a `environment.json` file in the `src/environments` folder of the host/shell application.
+You also need to provide an `environment.json` file in the `src/environments` folder of the host/shell application.
 Example of `environment.json`s:
 
 ```json
