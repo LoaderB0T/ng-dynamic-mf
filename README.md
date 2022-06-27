@@ -34,6 +34,8 @@ This project aims to improve the general experience of developers using Module F
 
 ## Getting Started 🚀
 
+If you want to check out a working example, take a look at my portfolio project [awdware](https://github.com/LoaderB0T/awdware3).
+
 ### Module Federation Plugin
 
 This project uses the [Module Federation Plugin](https://github.com/angular-architects/module-federation-plugin/blob/main/libs/mf/README.md) to load modules at runtime. Please follow the instructions in the README.md file of the plugin to get started.
