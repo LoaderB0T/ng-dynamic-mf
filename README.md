@@ -275,7 +275,7 @@ export class HomeEntryModule {
 }
 ```
 
-### Enviorment variables
+### Environment variables
 
 ng-dynamic-mf provides a way to specify variables in an `environment.json` file (after the app has been built). This is different from the `environment.ts` file that is used by Angular CLI, as this will be baked into the app during the build. The `environment.json` file can be edited at any time and the change will be reflected in the app after a reload.
 
