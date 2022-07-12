@@ -1,8 +1,8 @@
 import { loadRemoteModule } from '@angular-architects/module-federation';
-import { basePaths } from '../resource-map/base-path';
+import { basePaths, resourceMapper } from '../resource-map/base-path';
 import { environment } from '../environment';
-import { ModuleDefinition } from './load-modules';
 import { loadedModules } from './loaded-modules';
+import { ModuleDefinition } from '../models/module-definition.type';
 
 export const loadModule = async (moduleToLoad: ModuleDefinition) => {
   const loadedModule = await loadRemoteModule({
@@ -12,6 +12,16 @@ export const loadModule = async (moduleToLoad: ModuleDefinition) => {
   });
   basePaths[moduleToLoad.name] = moduleToLoad.url;
   loadedModules.push(loadedModule[moduleToLoad.ngModuleName]);
+  if (moduleToLoad.hasGlobalStyles) {
+    const head = document.getElementsByTagName('head')[0];
+    const link = document.createElement('link');
+    link.id = `global-style-${moduleToLoad.name}`;
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = resourceMapper(moduleToLoad.name, 'global-styles.css');
+    link.media = 'all';
+    head.appendChild(link);
+  }
   if (!environment.production) {
     console.debug(`Loaded module: ${moduleToLoad.name}`);
   }

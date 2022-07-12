@@ -281,6 +281,36 @@ ng-dynamic-mf provides a way to specify variables in an `environment.json` file 
 
 You do not have to use the `environment.json` file, you can also keep using the `environment.ts` file. (However you will need to create an empty `environment.json` file to prevent errors).
 
+### Global Styles
+
+ng-dynamic-mf provides a way to load global styles into the app. This is useful for loading styles that are defined by a module but should be applied globally (no view encapsulation). To do so, you need to add a styles file (eg `global.scss`) to your module that defines the styles. Afterwards you need to adjust your modules `angular.json` file to include the styles file and bundle it separately with the name `global-styles`:
+
+```json
+{
+  [...],
+  "targets": {
+    "build": {
+      [...],
+      "options": {
+        [...],
+        "styles": [
+          "apps/projects/src/styles.scss",
+          {
+            "input": "apps/projects/src/global.scss",
+            "bundleName": "global-styles"
+          }
+        ],
+        [...]
+      }
+    }
+  }
+}
+```
+
+Note: The bundle name has to be `global-styles` for ng-dynamic-mf to recognize it.
+
+Afterwards you can tell ng-dynamic-mf to load the styles by adding ```"hasGlobalStyles": true``` to this modules config in the `modules.json` file.
+
 ## Contributing 🧑🏻‍💻
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.

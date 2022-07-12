@@ -1,10 +1,8 @@
 import { environment, Environment, initializeEnvironment } from '../environment';
+import { AppInitBehavior } from '../models/app-init-behavior.type';
+import { ModuleDefinition } from '../models/module-definition.type';
 import { loadModule } from './load-module';
 import { loadedModules } from './loaded-modules';
-
-export type ModuleDefinition = { name: string; ngModuleName: string; url: string };
-
-export type AppInitBehavior = 'loadModules' | 'loadEnvironment' | 'loadModulesAndEnvironment';
 
 export const initializeApp = async (
   behavior: AppInitBehavior = 'loadModulesAndEnvironment',
