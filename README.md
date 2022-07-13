@@ -311,6 +311,8 @@ Note: The bundle name has to be `global-styles` for ng-dynamic-mf to recognize i
 
 Afterwards you can tell ng-dynamic-mf to load the styles by adding ```"hasGlobalStyles": true``` to this modules config in the `modules.json` file.
 
+Note: Don't forget to disable output hashing in the `angular.json` file or make sure to rename the file after it gets created. (File name has to be `global-styles.css` in the root of the module, next to the entry point file).
+
 ## Contributing 🧑🏻‍💻
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
