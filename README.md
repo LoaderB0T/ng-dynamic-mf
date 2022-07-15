@@ -218,10 +218,10 @@ export class TranslationResolver implements Resolve<void> {
     return this._dynamicTranslationService.registerTranslations(['de', 'en'], l => `assets/locales/${l}.json`, moduleName);
   }
 }
-
 ```
 
 All you need to do then is to make sure that all of your routes have a `data` property with something like `{ module: '<insert-module-name>' }`.
+
 </details>
 
 ### Routing
@@ -230,6 +230,7 @@ When a module provides routes that should be nested inside of another route of t
 You dont need to do anything here, if the routes of your modules should all be resolved relative to the root of the shell app (no nesting).
 Example:
 Route config of the shell:
+
 ```typescript
 import { Routes } from '@angular/router';
 
@@ -249,6 +250,7 @@ export const routes: Routes = [
   }
 ];
 ```
+
 We want all modules to be registered where `#module-entry-point#` is located.
 
 ```typescript
@@ -311,7 +313,7 @@ ng-dynamic-mf provides a way to load global styles into the app. This is useful 
 
 Note: The bundle name has to be `global-styles` for ng-dynamic-mf to recognize it.
 
-Afterwards you can tell ng-dynamic-mf to load the styles by adding ```"hasGlobalStyles": true``` to this modules config in the `modules.json` file.
+Afterwards you can tell ng-dynamic-mf to load the styles by adding `"hasGlobalStyles": true` to this modules config in the `modules.json` file.
 
 Note: Don't forget to disable output hashing in the `angular.json` file or make sure to rename the file after it gets created. (File name has to be `global-styles.css` in the root of the module, next to the entry point file).
 
