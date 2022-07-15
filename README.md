@@ -23,7 +23,9 @@ ng-dynamic-mf builds upon this plugin and aims to bring the modularity of Module
 
 ✅ Assets are resolved correctly at runtime (both for running the app standalone and in a shell) with a provided pipe.
 
-✅ (Future) Support for custom routing logic (Register module routes as child of any other module)
+✅ Support for custom routing logic (Register module routes as child of any other module)
+
+✅ Support for global styles (Load global styles from any module)
 
 This project aims to improve the general experience of developers using Module Federation in Angular. Even if you don't _need_ truly dynamic modules, you can still benefit from this project.
 
