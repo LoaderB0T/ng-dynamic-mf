@@ -17,7 +17,7 @@ export const findParentOfRouteRecursiveImpl = (routes: Routes, path: string, lev
             "You don't need to use this method if you are using the entry point at the root of the routing configuration."
         );
       }
-      return route;
+      return true;
     }
 
     if (route.children) {
