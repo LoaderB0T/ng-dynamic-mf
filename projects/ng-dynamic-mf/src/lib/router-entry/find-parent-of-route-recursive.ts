@@ -1,6 +1,14 @@
 import { Route, Routes } from '@angular/router';
 
 export const findParentOfRouteRecursive = (routes: Routes, path: string, level = 0): Route | undefined => {
+  const value = findParentOfRouteRecursiveImpl(routes, path, level);
+  if (value === true) {
+    return undefined;
+  }
+  return value;
+};
+
+export const findParentOfRouteRecursiveImpl = (routes: Routes, path: string, level = 0): Route | true | undefined => {
   for (const route of routes) {
     if (route.path === path) {
       if (level === 0) {
@@ -14,8 +22,10 @@ export const findParentOfRouteRecursive = (routes: Routes, path: string, level =
 
     if (route.children) {
       const found = findParentOfRouteRecursive(route.children, path, level + 1);
-      if (found) {
+      if (found === true) {
         return route;
+      } else if (found) {
+        return found;
       }
     }
   }
