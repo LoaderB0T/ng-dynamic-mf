@@ -21,7 +21,7 @@ export const findParentOfRouteRecursiveImpl = (routes: Routes, path: string, lev
     }
 
     if (route.children) {
-      const found = findParentOfRouteRecursive(route.children, path, level + 1);
+      const found = findParentOfRouteRecursiveImpl(route.children, path, level + 1);
       if (found === true) {
         return route;
       } else if (found) {
