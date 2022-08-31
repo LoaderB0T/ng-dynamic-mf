@@ -1,6 +1,31 @@
 {
   "name": "ng-dynamic-mf",
   "version": "1.2.0",
+  "license": "MIT",
+  "author": {
+    "name": "Janik Schumacher (LoaderB0T)",
+    "url": "https://awdware.de"
+  },
+  "homepage": "https://github.com/LoaderB0T/ng-dynamic-mf",
+  "bugs": {
+    "url": "https://github.com/LoaderB0T/ng-dynamic-mf/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LoaderB0T/ng-dynamic-mf.git"
+  },
+  "keywords": [
+    "module",
+    "federation",
+    "mf",
+    "angular",
+    "assets",
+    "global",
+    "translations",
+    "styles",
+    "dynamic",
+    "module-federation"
+  ],
   "peerDependencies": {
     "@angular/common": ">=13.2.0",
     "@angular/core": ">=13.2.0",
