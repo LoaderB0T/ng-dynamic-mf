@@ -7,6 +7,26 @@
     "name": "Janik Schumacher (LoaderB0T)",
     "url": "https://awdware.de"
   },
+  "homepage": "https://github.com/LoaderB0T/ng-dynamic-mf",
+  "bugs": {
+    "url": "https://github.com/LoaderB0T/ng-dynamic-mf/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LoaderB0T/ng-dynamic-mf.git"
+  },
+  "keywords": [
+    "module",
+    "federation",
+    "mf",
+    "angular",
+    "assets",
+    "global",
+    "translations",
+    "styles",
+    "dynamic",
+    "module-federation"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
