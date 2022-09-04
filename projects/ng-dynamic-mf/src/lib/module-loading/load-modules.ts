@@ -13,7 +13,7 @@ export const initializeApp = async (
   const doLoadEnvironment = behavior === 'loadModulesAndEnvironment' || behavior === 'loadEnvironment';
 
   const fetchModules = doLoadModules
-    ? fetch(modulePath ?? '/modules/modules.json')
+    ? fetch(modulePath ?? '/modules/modules.json', { cache: 'no-cache' })
         .then(x => x.json())
         .catch(() => {
           throw new Error('Failed to load modules.json');
