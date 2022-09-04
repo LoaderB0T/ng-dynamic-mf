@@ -27,6 +27,8 @@ ng-dynamic-mf builds upon this plugin and aims to bring the modularity of Module
 
 ✅ Support for global styles (Load global styles from any module)
 
+✅ Use with Nx with [nx-dynamic-mf](https://github.com/LoaderB0T/nx-dynamic-mf)
+
 This project aims to improve the general experience of developers using Module Federation in Angular. Even if you don't _need_ truly dynamic modules, you can still benefit from this project.
 
 ## Built With 🔧
@@ -37,6 +39,8 @@ This project aims to improve the general experience of developers using Module F
 ## Getting Started 🚀
 
 If you want to check out a working example, take a look at my portfolio project [awdware](https://github.com/LoaderB0T/awdware3).
+
+If you are using Nx, you should also check out [nx-dynamic-mf](https://github.com/LoaderB0T/nx-dynamic-mf)
 
 ### Module Federation Plugin
 
