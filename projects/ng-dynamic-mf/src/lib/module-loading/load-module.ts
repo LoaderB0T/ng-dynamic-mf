@@ -5,9 +5,10 @@ import { loadedModules } from './loaded-modules';
 import { ModuleDefinition } from '../models/module-definition.type';
 
 export const loadModule = async (moduleToLoad: ModuleDefinition) => {
+  const hash = moduleToLoad.hash ? `?${moduleToLoad.hash}` : '';
   const loadedModule = await loadRemoteModule({
     exposedModule: './Module',
-    remoteEntry: `${moduleToLoad.url}remoteEntry.js`,
+    remoteEntry: `${moduleToLoad.url}remoteEntry.js${hash}`,
     type: 'module'
   });
   basePaths[moduleToLoad.name] = moduleToLoad.url;
