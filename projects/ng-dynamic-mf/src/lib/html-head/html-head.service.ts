@@ -30,7 +30,7 @@ export class HtmlHeadService {
         script.crossOrigin = element.crossorigin ?? null;
         if (element.data) {
           Object.keys(element.data).forEach(key => {
-            script.setAttribute(`name-${key}`, element.data![key]);
+            script.setAttribute(`data-${key}`, element.data![key]);
           });
         }
         this._knownElements.add(element.src);
