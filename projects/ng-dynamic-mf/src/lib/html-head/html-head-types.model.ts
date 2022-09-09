@@ -10,4 +10,7 @@ export type AddHtmlHeadElementType =
       type: 'script';
       src: string;
       crossorigin?: string;
+      data?: {
+        [key: string]: string;
+      };
     };
