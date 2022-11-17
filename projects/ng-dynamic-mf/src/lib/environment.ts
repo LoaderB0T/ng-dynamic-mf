@@ -28,3 +28,12 @@ export const initializeEnvironment = (env: Environment) => {
     environment[key] = env[key];
   });
 };
+
+/**
+ * Use this to set a custom environment variable at runtime
+ * @param key the key of the environment variable
+ * @param value the value of the environment variable
+ */
+export const setEnvironmentValue = (key: string, value: any) => {
+  environment[key] = value;
+};
