@@ -1,5 +1,5 @@
 [![npm](https://img.shields.io/npm/v/ng-dynamic-mf?color=%2300d26a&style=for-the-badge)](https://www.npmjs.com/package/ng-dynamic-mf)
-[![Sonar Quality Gate](https://img.shields.io/github/actions/workflow/status/LoaderB0T/ng-dynamic-mf/build.yml?branch=main&style=for-the-badge)](https://sonarcloud.io/summary/new_code?id=LoaderB0T_ng-dynamic-mf)
+[![Sonar Quality Gate](https://img.shields.io/sonar/quality_gate/LoaderB0T_ng-dynamic-mf?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge)](https://sonarcloud.io/summary/new_code?id=LoaderB0T_ng-dynamic-mf)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/ng-dynamic-mf?color=%23FF006F&label=Bundle%20Size&style=for-the-badge)](https://bundlephobia.com/package/ng-dynamic-mf)
 
 # ng-dynamic-mf
