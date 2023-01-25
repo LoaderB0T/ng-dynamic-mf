@@ -1,6 +1,6 @@
 {
   "name": "ng-dynamic-mf",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "license": "MIT",
   "author": {
     "name": "Janik Schumacher (LoaderB0T)",
@@ -27,9 +27,9 @@
     "module-federation"
   ],
   "peerDependencies": {
+    "@angular-architects/module-federation": ">=14.0.0",
     "@angular/common": ">=13.2.0",
     "@angular/core": ">=13.2.0",
-    "@angular-architects/module-federation": ">=14.0.0",
     "@ngx-translate/core": ">=14.0.0"
   },
   "dependencies": {
