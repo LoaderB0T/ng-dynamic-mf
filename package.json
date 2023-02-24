@@ -31,7 +31,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "drop": "cd dist && yarn publish --no-git-tag-version",
+    "drop": "cd dist && pnpm publish --no-git-tag-version",
     "postbuild": "cpy README.md dist && ts-node ./build/fix-special-const.ts",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
