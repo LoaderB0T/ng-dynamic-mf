@@ -1,1 +1,1 @@
-export * from './loaded-translations.service';
+export * from './dynamic-translations.service';
