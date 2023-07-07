@@ -123,6 +123,9 @@ export class DynamicTranslationService {
     await this.resolveTranslations(translationResolvers);
     const loadedTranslations = this.mergeLoadedTranslations(translationResolvers);
     this._translateService.setTranslation(locale, loadedTranslations, false);
+    if (this._locale) {
+      this._translateService.use(this._locale);
+    }
   }
 
   private async resolveTranslations(translationResolvers: TranslationResolverState[]) {

@@ -1,4 +1,5 @@
 import { EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs';
 
 interface LangChangeEvent {
   lang: string;
@@ -9,4 +10,5 @@ export interface TranslateService {
   get onLangChange(): EventEmitter<LangChangeEvent>;
   currentLang: string;
   defaultLang: string;
+  use(lang: string): Observable<any>;
 }
