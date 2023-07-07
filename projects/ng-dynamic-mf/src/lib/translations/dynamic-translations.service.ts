@@ -2,128 +2,178 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { resourceMapper } from '../resource-map';
 import { TranslateService } from './service.type';
-import { ModuleTranslationSet, TranslationSet, TranslationType } from './translations.type';
+import {
+  isAssetResolver,
+  TranslationResolver,
+  TranslationResolverMultiLocale,
+  TranslationResolverSet
+} from './translation-resolver.type';
+import { TranslationType } from './translations.type';
+
+type TranslationResolverState = {
+  resolver: TranslationResolver;
+  key: string;
+  loadedTranslations: TranslationType | null;
+};
+
+type TranslationStore = {
+  [locale: string]: TranslationResolverState[];
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class DynamicTranslationService {
   private _translateService: TranslateService | null = null;
-  private readonly _knownTranslations: ModuleTranslationSet = {};
-  private readonly _knownModules: string[] = [];
-  private readonly _knownLocales: string[] = [];
-  private readonly _knownResourceUrls: string[] = [];
+  private readonly _translationsInvalidated = new BehaviorSubject<void>(undefined);
+  private readonly _translationStore: TranslationStore = {};
+  private _locale?: string;
 
   public setTranslateService(translateService: TranslateService): void {
     this._translateService = translateService;
+    this._locale = translateService.currentLang || translateService.defaultLang || 'en';
+    translateService.onLangChange.subscribe(e => {
+      this._locale = e.lang;
+      this.invalidateTranslations();
+    });
+
+    this._translationsInvalidated.subscribe(() => {
+      this.loadTranslations();
+    });
   }
 
-  private readonly _loadedTranslations = new BehaviorSubject<TranslationSet>({});
-  public readonly loadedTranslations$ = this._loadedTranslations.asObservable();
+  public registerTranslation(translationSetIdentifier: string, locale: string, translationResolver: TranslationResolver) {
+    this.registerSingleTranslation(translationSetIdentifier, locale, translationResolver);
+    this.invalidateTranslations();
+  }
 
-  /**
-   * Register translations for a module.
-   *
-   * This method will load the translations for the given locales and merge them with any other translations that have already been loaded.
-   *
-   * @param translations The translations to load by locale. Example:
-   * ```typescript
-   * { en: import('assets/i18n/en.ts'), de: import('assets/i18n/de.ts') }
-   * ```
-   * @param moduleName The name of the module to load translations for
-   */
-  public async registerTranslationsFromModule(
-    translations: { [locale: string]: Promise<any> },
-    moduleName: string
-  ): Promise<void> {
+  public registerTranslations(translationSetIdentifier: string, translationResolvers: TranslationResolverMultiLocale) {
+    this.doRegisterTranslations(translationSetIdentifier, translationResolvers);
+    this.invalidateTranslations();
+  }
+
+  private doRegisterTranslations(translationSetIdentifier: string, translationResolvers: TranslationResolverMultiLocale) {
+    Object.keys(translationResolvers).forEach(locale => {
+      this.registerSingleTranslation(translationSetIdentifier, locale, translationResolvers[locale]);
+    });
+  }
+
+  public registerTranslationSet(set: TranslationResolverSet) {
+    Object.keys(set).forEach(translationSetKey => {
+      this.doRegisterTranslations(translationSetKey, set[translationSetKey]);
+    });
+    this.invalidateTranslations();
+  }
+
+  private registerSingleTranslation(translationSetIdentifier: string, locale: string, translationResolver: TranslationResolver) {
     if (!this._translateService) {
       throw new Error(
         'DynamicTranslationService: TranslateService not found. Make sure you have @ngx-translate/core installed and called setTranslateService()'
       );
     }
-    const locales = Object.keys(translations);
-    const promises = locales.map(async locale => {
-      await this.loadLocaleFromImportPath(moduleName, translations[locale], locale);
-    });
-    await Promise.all(promises);
-    const allTranslations: TranslationSet = this.mergeLoadedTranslations();
-    this._knownLocales.forEach(locale => {
-      const translations = allTranslations[locale];
-      this._translateService!.setTranslation(locale, translations, true);
-    });
-  }
+    const translationResolvers = this._translationStore[locale] || [];
+    const existing = translationResolvers.find(r => r.key === translationSetIdentifier);
 
-  /**
-   * Register translations for a module.
-   *
-   * This method will load the translations for the given locales and merge them with any other translations that have already been loaded.
-   *
-   * @param locales The locales to load translations for (e.g. ['en', 'de'])
-   * @param resolver A function that takes a locale and returns the path to the translation file for that locale (e.g. ``(locale) => `assets/i18n/${locale}.json` ``)
-   * @param moduleName The name of the module to load translations for
-   */
-  public async registerTranslations(locales: string[], resolver: (locale: string) => string, moduleName: string): Promise<void> {
-    if (!this._translateService) {
-      throw new Error(
-        'DynamicTranslationService: TranslateService not found. Make sure you have @ngx-translate/core installed and called setTranslateService()'
-      );
+    if (existing) {
+      existing.resolver = translationResolver;
+      existing.loadedTranslations = null;
+    } else {
+      translationResolvers.push({ resolver: translationResolver, key: translationSetIdentifier, loadedTranslations: null });
+      this._translationStore[locale] ??= translationResolvers;
     }
-    const promises = locales.map(async locale => {
-      await this.loadLocaleFromAssetPath(moduleName, resolver, locale);
-    });
-    await Promise.all(promises);
-    const allTranslations: TranslationSet = this.mergeLoadedTranslations();
-    this._knownLocales.forEach(locale => {
-      const translations = allTranslations[locale];
-      this._translateService!.setTranslation(locale, translations, true);
-    });
   }
 
-  private mergeLoadedTranslations() {
-    const allTranslations: TranslationSet = {};
-    this._knownModules.forEach(moduleName => {
-      const moduleTranslations = this._knownTranslations[moduleName];
-      this._knownLocales.forEach(locale => {
-        if (moduleTranslations[locale]) {
-          allTranslations[locale] = {
-            ...allTranslations[locale],
-            ...moduleTranslations[locale]
-          };
-        }
+  public removeTranslation(translationSetIdentifier: string, locale?: string) {
+    if (!locale) {
+      Object.keys(this._translationStore).forEach(locale => {
+        this.doRemoveTranslation(translationSetIdentifier, locale);
       });
+    } else {
+      this.doRemoveTranslation(translationSetIdentifier, locale);
+    }
+    this.invalidateTranslations();
+  }
+
+  private doRemoveTranslation(translationSetIdentifier: string, locale: string) {
+    const translationResolvers = this._translationStore[locale] ?? [];
+    const index = translationResolvers.findIndex(r => r.key === translationSetIdentifier);
+    if (index !== -1) {
+      translationResolvers.splice(index, 1);
+    }
+  }
+
+  private invalidateTranslations() {
+    this._translationsInvalidated.next();
+  }
+
+  private async loadTranslations() {
+    if (!this._translateService) {
+      throw new Error(
+        'DynamicTranslationService: TranslateService not found. Make sure you have @ngx-translate/core installed and called setTranslateService()'
+      );
+    }
+    const locale = this._locale;
+    if (!locale) {
+      return;
+    }
+    const translationResolvers = this._translationStore[locale] ?? [];
+    await this.resolveTranslations(translationResolvers);
+    const loadedTranslations = this.mergeLoadedTranslations(translationResolvers);
+    this._translateService.setTranslation(locale, loadedTranslations, false);
+  }
+
+  private async resolveTranslations(translationResolvers: TranslationResolverState[]) {
+    const promises = translationResolvers.map(async translationResolver => {
+      if (translationResolver.loadedTranslations) {
+        return;
+      }
+      const loadedTranslations = await this.resolveTranslation(translationResolver.resolver);
+      translationResolver.loadedTranslations = loadedTranslations;
     });
-    return allTranslations;
+    await Promise.all(promises);
   }
 
-  private async loadLocaleFromAssetPath(moduleName: string, resolver: (locale: string) => string, locale: string) {
+  private mergeLoadedTranslations(translationResolvers: TranslationResolverState[]): TranslationType {
+    const translations: TranslationType = {};
+    translationResolvers.forEach(translationResolver => {
+      if (!translationResolver.loadedTranslations) {
+        return;
+      }
+      Object.assign(translations, translationResolver.loadedTranslations);
+    });
+    return translations;
+  }
+
+  private async resolveTranslation(translationResolver: TranslationResolver): Promise<TranslationType> {
+    let promiseResolver: Promise<TranslationType>;
+    // check if translationResolver is a promise
+    if (translationResolver instanceof Promise) {
+      promiseResolver = translationResolver;
+    } else if (typeof translationResolver === 'function') {
+      const fnResult = translationResolver();
+      if (fnResult instanceof Promise) {
+        promiseResolver = fnResult;
+      } else {
+        promiseResolver = Promise.resolve(fnResult);
+      }
+    } else if (isAssetResolver(translationResolver)) {
+      promiseResolver = this.loadLocaleFromAssetPath(translationResolver.moduleName, translationResolver.resovler, this._locale!);
+    } else {
+      promiseResolver = Promise.resolve(translationResolver);
+    }
+    const loadedTranslations = await promiseResolver;
+    return loadedTranslations;
+  }
+
+  private async loadLocaleFromAssetPath(
+    moduleName: string,
+    resolver: (locale: string) => string,
+    locale: string
+  ): Promise<TranslationType> {
     const resourceUrl = resourceMapper(moduleName, resolver(locale));
-    if (this._knownTranslations[moduleName]?.[locale]) {
-      // Already loaded
-      return;
-    }
-    this._knownResourceUrls.push(resourceUrl);
+
     const response = await fetch(resourceUrl);
-    const loadedTranslation = (await response.json()) as TranslationType;
-    this.saveResolvedTranslation(locale, moduleName, loadedTranslation);
-  }
-
-  private async loadLocaleFromImportPath(moduleName: string, translation: Promise<any>, locale: string) {
-    if (this._knownTranslations[moduleName]?.[locale]) {
-      // Already loaded
-      return;
-    }
-    const loadedTranslation = (await translation) as TranslationType;
-    this.saveResolvedTranslation(locale, moduleName, loadedTranslation);
-  }
-
-  private saveResolvedTranslation(locale: string, moduleName: string, loadedTranslation: TranslationType) {
-    if (!this._knownLocales.some(l => l === locale)) {
-      this._knownLocales.push(locale);
-    }
-    if (!this._knownTranslations[moduleName]) {
-      this._knownModules.push(moduleName);
-      this._knownTranslations[moduleName] = {};
-    }
-    this._knownTranslations[moduleName][locale] = loadedTranslation;
+    const content = (await response.json()) as TranslationType;
+    return content;
   }
 }
