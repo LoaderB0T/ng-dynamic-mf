@@ -30,6 +30,9 @@ export class DynamicTranslationService {
   private _locale?: string;
 
   public setTranslateService(translateService: TranslateService): void {
+    if (this._translateService) {
+      return;
+    }
     this._translateService = translateService;
     this._locale = translateService.currentLang || translateService.defaultLang || 'en';
     translateService.onLangChange.subscribe(e => {
