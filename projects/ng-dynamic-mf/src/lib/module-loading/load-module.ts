@@ -20,7 +20,7 @@ export const loadModule = async (moduleToLoad: ModuleDefinition) => {
     link.id = `global-style-${moduleToLoad.name}`;
     link.rel = 'stylesheet';
     link.type = 'text/css';
-    link.href = resourceMapper(moduleToLoad.name, 'global-styles.css');
+    link.href = resourceMapper(moduleToLoad.name, moduleToLoad.globalStyleBundleName ?? 'global-styles.css');
     link.media = 'all';
     head.appendChild(link);
   }

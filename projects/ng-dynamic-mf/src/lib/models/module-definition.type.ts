@@ -5,4 +5,5 @@ export type ModuleDefinition = {
   url: string;
   hash?: string;
   hasGlobalStyles?: boolean;
+  globalStyleBundleName?: string;
 };
