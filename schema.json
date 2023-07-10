@@ -4,6 +4,9 @@
         "modules": {
             "items": {
                 "properties": {
+                    "globalStyleBundleName": {
+                        "type": "string"
+                    },
                     "hasGlobalStyles": {
                         "type": "boolean"
                     },
