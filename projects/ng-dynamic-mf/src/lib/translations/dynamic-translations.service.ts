@@ -20,6 +20,11 @@ type TranslationStore = {
   [locale: string]: TranslationResolverState[];
 };
 
+/**
+ * This service is used to dynamically load translations from different modules.
+ * It uses @ngx-translate/core internally, so make sure you have it installed and
+ * call setTranslateService() before using this service.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -29,6 +34,10 @@ export class DynamicTranslationService {
   private readonly _translationStore: TranslationStore = {};
   private _locale?: string;
 
+  /**
+   * This method has to be called before any other method.
+   * @param translateService @ngx-translate/core TranslateService instance to use
+   */
   public setTranslateService(translateService: TranslateService): void {
     if (this._translateService) {
       return;
@@ -45,27 +54,46 @@ export class DynamicTranslationService {
     });
   }
 
-  public registerTranslation(translationSetIdentifier: string, locale: string, translationResolver: TranslationResolver) {
+  /**
+   * Registers a resolver for translations for a specific locale.
+   * @param translationSetIdentifier The identifier of the translations (e.g. the name of the module)
+   * @param locale The locale of the translations
+   * @param translationResolver The resolver for the translations
+   */
+  public registerTranslationSetForLocale(
+    translationSetIdentifier: string,
+    locale: string,
+    translationResolver: TranslationResolver
+  ) {
     this.registerSingleTranslation(translationSetIdentifier, locale, translationResolver);
     this.invalidateTranslations();
   }
 
-  public registerTranslations(translationSetIdentifier: string, translationResolvers: TranslationResolverMultiLocale) {
-    this.doRegisterTranslations(translationSetIdentifier, translationResolvers);
+  /**
+   * Registers resolvers for translations for multiple locales.
+   * @param translationSetIdentifier The identifier of the translations (e.g. the name of the module)
+   * @param translationResolvers The resolvers for the translations
+   */
+  public registerTranslationSet(translationSetIdentifier: string, translationResolvers: TranslationResolverMultiLocale) {
+    this.doRegisterTranslationSet(translationSetIdentifier, translationResolvers);
     this.invalidateTranslations();
   }
 
-  private doRegisterTranslations(translationSetIdentifier: string, translationResolvers: TranslationResolverMultiLocale) {
+  /**
+   * Registers multiple translation resolvers for multiple locales.
+   * @param set The set of resolvers for the translations
+   */
+  public registerMultipleTranslationSets(set: TranslationResolverSet) {
+    Object.keys(set).forEach(translationSetKey => {
+      this.doRegisterTranslationSet(translationSetKey, set[translationSetKey]);
+    });
+    this.invalidateTranslations();
+  }
+
+  private doRegisterTranslationSet(translationSetIdentifier: string, translationResolvers: TranslationResolverMultiLocale) {
     Object.keys(translationResolvers).forEach(locale => {
       this.registerSingleTranslation(translationSetIdentifier, locale, translationResolvers[locale]);
     });
-  }
-
-  public registerTranslationSet(set: TranslationResolverSet) {
-    Object.keys(set).forEach(translationSetKey => {
-      this.doRegisterTranslations(translationSetKey, set[translationSetKey]);
-    });
-    this.invalidateTranslations();
   }
 
   private registerSingleTranslation(translationSetIdentifier: string, locale: string, translationResolver: TranslationResolver) {
@@ -86,6 +114,11 @@ export class DynamicTranslationService {
     }
   }
 
+  /**
+   * Removes a translation set for a specific locale.
+   * @param translationSetIdentifier The identifier of the translations (e.g. the name of the module)
+   * @param locale The locale of the translations. If not specified, the translations will be removed for all locales.
+   */
   public removeTranslation(translationSetIdentifier: string, locale?: string) {
     if (!locale) {
       Object.keys(this._translationStore).forEach(locale => {
