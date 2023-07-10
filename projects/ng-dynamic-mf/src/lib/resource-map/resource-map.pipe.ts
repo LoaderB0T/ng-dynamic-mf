@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { resourceMapper } from './base-path';
+import { resourceMapper } from './resource-mapper';
 
 @Pipe({
   name: 'resourceMap'

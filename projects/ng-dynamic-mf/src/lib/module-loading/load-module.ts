@@ -1,14 +1,15 @@
 import { loadRemoteModule } from '@angular-architects/module-federation';
-import { basePaths, resourceMapper } from '../resource-map/base-path';
+import { basePaths, resourceMapper } from '../resource-map/resource-mapper';
 import { environment } from '../environment';
 import { loadedModules } from './loaded-modules';
 import { ModuleDefinition } from '../models/module-definition.type';
+import { join } from '../utils';
 
 export const loadModule = async (moduleToLoad: ModuleDefinition) => {
   const hash = moduleToLoad.hash ? `?${moduleToLoad.hash}` : '';
   const loadedModule = await loadRemoteModule({
     exposedModule: './Module',
-    remoteEntry: `${moduleToLoad.url}remoteEntry.js${hash}`,
+    remoteEntry: `${(join(moduleToLoad.url), 'remoteEntry.js')}${hash}`,
     type: 'module'
   });
   basePaths[moduleToLoad.name] = moduleToLoad.url;
