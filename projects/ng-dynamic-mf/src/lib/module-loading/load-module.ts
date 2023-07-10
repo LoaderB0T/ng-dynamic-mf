@@ -6,6 +6,8 @@ import { ModuleDefinition } from '../models/module-definition.type';
 import { join } from '../utils';
 
 export const loadModule = async (moduleToLoad: ModuleDefinition) => {
+  fixModuleToLoadUrl(moduleToLoad);
+
   const hash = moduleToLoad.hash ? `?${moduleToLoad.hash}` : '';
   const loadedModule = await loadRemoteModule({
     exposedModule: './Module',
@@ -28,3 +30,12 @@ export const loadModule = async (moduleToLoad: ModuleDefinition) => {
     console.debug(`Loaded module: ${moduleToLoad.name}`);
   }
 };
+function fixModuleToLoadUrl(moduleToLoad: ModuleDefinition) {
+  if (!moduleToLoad.url.startsWith('http')) {
+    if (moduleToLoad.url.startsWith('/')) {
+      moduleToLoad.url = `.${moduleToLoad.url}`;
+    } else if (!moduleToLoad.url.startsWith('./')) {
+      moduleToLoad.url = `./${moduleToLoad.url}`;
+    }
+  }
+}
