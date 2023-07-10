@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+        "modules": {
+            "items": {
+                "properties": {
+                    "hasGlobalStyles": {
+                        "type": "boolean"
+                    },
+                    "hash": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "ngModuleName": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "ngModuleName",
+                    "url"
+                ],
+                "type": "object"
+            },
+            "type": "array"
+        }
+    },
+    "required": [
+        "modules"
+    ],
+    "type": "object"
+}
+

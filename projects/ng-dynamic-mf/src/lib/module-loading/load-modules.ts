@@ -1,6 +1,6 @@
 import { environment, Environment, initializeEnvironment } from '../environment';
 import { AppInitBehavior } from '../models/app-init-behavior.type';
-import { ModuleDefinition } from '../models/module-definition.type';
+import { ModuleDefinitions } from '../models/module-definitions.type';
 import { loadModule } from './load-module';
 import { loadedModules } from './loaded-modules';
 
@@ -28,17 +28,17 @@ export const initializeApp = async (
         })
     : Promise.resolve({});
 
-  const [modules, env] = (await Promise.all([fetchModules, fetchEnvironment])) as [ModuleDefinition[], Environment];
+  const [moduleDefs, env] = (await Promise.all([fetchModules, fetchEnvironment])) as [ModuleDefinitions, Environment];
   if (doLoadEnvironment) {
     initializeEnvironment(env);
   }
 
   if (doLoadModules) {
-    await Promise.all(modules.map(moduleToLoad => loadModule(moduleToLoad)));
+    await Promise.all(moduleDefs.modules.map(moduleToLoad => loadModule(moduleToLoad)));
     if (!environment.production) {
       console.debug(
         'Loaded modules:',
-        modules.map(x => x.name),
+        moduleDefs.modules.map(x => x.name),
         loadedModules
       );
     }

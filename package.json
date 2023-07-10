@@ -32,7 +32,8 @@
     "start": "ng serve",
     "build": "ng build",
     "drop": "cd dist && pnpm publish --no-git-tag-version",
-    "postbuild": "cpy README.md dist && ts-node ./build/fix-special-const.ts",
+    "postbuild": "cpy README.md dist && ts-node ./build/fix-special-const.ts && pnpm generate-schema",
+    "generate-schema": "pnpm typescript-json-schema projects/ng-dynamic-mf/tsconfig.lib.json ModuleDefinitions --strictNullChecks true --required -o schema.json",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -49,6 +50,7 @@
     "@angular/router": "^15.2.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
+    "typescript-json-schema": "^0.58.1",
     "zone.js": "~0.11.4"
   },
   "prettier": "@awdware/prettier-config",
