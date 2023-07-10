@@ -16,6 +16,9 @@
                     "ngModuleName": {
                         "type": "string"
                     },
+                    "projectName": {
+                        "type": "string"
+                    },
                     "url": {
                         "type": "string"
                     }
