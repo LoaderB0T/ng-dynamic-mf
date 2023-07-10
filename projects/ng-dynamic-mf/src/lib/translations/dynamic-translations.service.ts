@@ -121,8 +121,8 @@ export class DynamicTranslationService {
    */
   public removeTranslation(translationSetIdentifier: string, locale?: string) {
     if (!locale) {
-      Object.keys(this._translationStore).forEach(locale => {
-        this.doRemoveTranslation(translationSetIdentifier, locale);
+      Object.keys(this._translationStore).forEach(l => {
+        this.doRemoveTranslation(translationSetIdentifier, l);
       });
     } else {
       this.doRemoveTranslation(translationSetIdentifier, locale);
