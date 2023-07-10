@@ -9,7 +9,7 @@ export const loadModule = async (moduleToLoad: ModuleDefinition) => {
   const hash = moduleToLoad.hash ? `?${moduleToLoad.hash}` : '';
   const loadedModule = await loadRemoteModule({
     exposedModule: './Module',
-    remoteEntry: `${(join(moduleToLoad.url), 'remoteEntry.js')}${hash}`,
+    remoteEntry: `${join(moduleToLoad.url, 'remoteEntry.js')}${hash}`,
     type: 'module'
   });
   basePaths[moduleToLoad.name] = moduleToLoad.url;
