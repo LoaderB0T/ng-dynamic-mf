@@ -6,14 +6,17 @@ import { loadedModules } from './loaded-modules';
 
 export const initializeApp = async (
   behavior: AppInitBehavior = 'loadModulesAndEnvironment',
-  modulePath?: string,
-  environmentPath?: string
+  settings?: {
+    modulePath?: string;
+    environmentPath?: string;
+    disableParentEnvironmentReuse?: boolean;
+  }
 ) => {
   const doLoadModules = behavior === 'loadModulesAndEnvironment' || behavior === 'loadModules';
   const doLoadEnvironment = behavior === 'loadModulesAndEnvironment' || behavior === 'loadEnvironment';
 
   const fetchModules = doLoadModules
-    ? fetch(modulePath ?? '/modules/modules.json', { cache: 'no-cache' })
+    ? fetch(settings?.modulePath ?? '/modules/modules.json', { cache: 'no-cache' })
         .then(x => x.json())
         .catch(() => {
           throw new Error('Failed to load modules.json');
@@ -21,7 +24,7 @@ export const initializeApp = async (
     : Promise.resolve([]);
 
   const fetchEnvironment = doLoadEnvironment
-    ? fetch(environmentPath ?? '/environments/environment.json')
+    ? fetch(settings?.environmentPath ?? '/environments/environment.json')
         .then(x => x.json())
         .catch(() => {
           throw new Error('Failed to load environment.json');
@@ -30,7 +33,7 @@ export const initializeApp = async (
 
   const [moduleDefs, env] = (await Promise.all([fetchModules, fetchEnvironment])) as [ModuleDefinitions, Environment];
   if (doLoadEnvironment) {
-    initializeEnvironment(env);
+    initializeEnvironment(env, settings?.disableParentEnvironmentReuse);
   }
 
   if (doLoadModules) {

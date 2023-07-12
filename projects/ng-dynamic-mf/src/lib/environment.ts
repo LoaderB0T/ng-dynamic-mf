@@ -20,8 +20,14 @@ export const envValidator = (defaultEnvironment: Environment) => {
 };
 
 // @internal
-export const initializeEnvironment = (env: Environment) => {
-  if (!env.production) {
+export const initializeEnvironment = (env: Environment, disableParentEnvironmentReuse?: boolean) => {
+  const existingEnv = (window as any).__ng_dynamic_mf_env__;
+
+  if (existingEnv && !disableParentEnvironmentReuse) {
+    Object.keys(existingEnv).forEach(key => {
+      environment[key] = env[key];
+    });
+  } else {
     (window as any).__ng_dynamic_mf_env__ = env;
   }
   Object.keys(env).forEach(key => {
