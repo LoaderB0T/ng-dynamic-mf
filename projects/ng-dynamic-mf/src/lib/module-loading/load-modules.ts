@@ -1,4 +1,4 @@
-import { environment, Environment, initializeEnvironment } from '../environment';
+import { environment, Environment, initializeEnvironment, reuseEnvironment } from '../environment';
 import { AppInitBehavior } from '../models/app-init-behavior.type';
 import { ModuleDefinitions } from '../models/module-definitions.type';
 import { loadModule } from './load-module';
@@ -34,6 +34,9 @@ export const initializeApp = async (
   const [moduleDefs, env] = (await Promise.all([fetchModules, fetchEnvironment])) as [ModuleDefinitions, Environment];
   if (doLoadEnvironment) {
     initializeEnvironment(env, settings?.disableParentEnvironmentReuse);
+  }
+  if (behavior === 'reuseEnvironment') {
+    reuseEnvironment();
   }
 
   if (doLoadModules) {

@@ -1,1 +1,1 @@
-export type AppInitBehavior = 'loadModules' | 'loadEnvironment' | 'loadModulesAndEnvironment';
+export type AppInitBehavior = 'loadModules' | 'loadEnvironment' | 'loadModulesAndEnvironment' | 'reuseEnvironment';
