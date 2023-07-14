@@ -16,7 +16,7 @@ export const initializeApp = async (
   const doLoadEnvironment = behavior === 'loadModulesAndEnvironment' || behavior === 'loadEnvironment';
 
   const fetchModules = doLoadModules
-    ? fetch(settings?.modulePath ?? '/modules/modules.json', { cache: 'no-cache' })
+    ? fetch(settings?.modulePath ?? '/modules.json', { cache: 'no-cache' })
         .then(x => x.json())
         .catch(() => {
           throw new Error('Failed to load modules.json');
@@ -24,7 +24,7 @@ export const initializeApp = async (
     : Promise.resolve([]);
 
   const fetchEnvironment = doLoadEnvironment
-    ? fetch(settings?.environmentPath ?? '/environments/environment.json')
+    ? fetch(settings?.environmentPath ?? '/environment.json', { cache: 'no-cache' })
         .then(x => x.json())
         .catch(() => {
           throw new Error('Failed to load environment.json');
