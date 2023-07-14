@@ -155,7 +155,7 @@ export class DynamicTranslationService {
     const translationResolvers = this._translationStore[locale] ?? [];
     await this.resolveTranslations(translationResolvers);
     const loadedTranslations = this.mergeLoadedTranslations(translationResolvers);
-    this._translateService.setTranslation(locale, loadedTranslations, false);
+    this._translateService.setTranslation(locale, loadedTranslations, true);
     if (this._locale) {
       this._translateService.use(this._locale);
     }
