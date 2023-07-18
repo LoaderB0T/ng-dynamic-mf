@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
 import { resourceMapper } from '../resource-map';
 import { TranslateService } from './service.type';
 import {
@@ -31,6 +31,7 @@ type TranslationStore = {
 export class DynamicTranslationService {
   private _translateService: TranslateService | null = null;
   private readonly _translationsInvalidated = new BehaviorSubject<void>(undefined);
+  private readonly _translationsUpdated = new BehaviorSubject<void>(undefined);
   private readonly _translationStore: TranslationStore = {};
   private _locale?: string;
 
@@ -130,6 +131,44 @@ export class DynamicTranslationService {
     this.invalidateTranslations();
   }
 
+  /**
+   * Asynchronously checks if a translation set is loaded for the current locale.
+   * @param translationSetIdentifier The identifier of the translations (e.g. the name of the module)
+   * @returns Observable that emits true if the translation set is loaded, false otherwise
+   */
+  public isTranslationSetLoaded(translationSetIdentifier: string): Observable<boolean> {
+    if (!this._translateService) {
+      throw new Error(
+        'DynamicTranslationService: TranslateService not found. Make sure you have @ngx-translate/core installed and called setTranslateService()'
+      );
+    }
+
+    return this._translateService.onLangChange.pipe(
+      switchMap(() =>
+        this._translationsUpdated.pipe(
+          map(() => this.isTranslationSetLoadedSync(translationSetIdentifier)),
+          distinctUntilChanged()
+        )
+      )
+    );
+  }
+
+  /**
+   * Checks if a translation set is loaded for the current locale.
+   * @param translationSetIdentifier The identifier of the translations (e.g. the name of the module)
+   * @returns true if the translation set is loaded, false otherwise
+   */
+  public isTranslationSetLoadedSync(translationSetIdentifier: string): boolean {
+    if (!this._locale) {
+      return false;
+    }
+    const set = this._translationStore[this._locale!];
+    if (!set) {
+      return false;
+    }
+    return set.some(r => r.key === translationSetIdentifier && !!r.loadedTranslations);
+  }
+
   private doRemoveTranslation(translationSetIdentifier: string, locale: string) {
     const translationResolvers = this._translationStore[locale] ?? [];
     const index = translationResolvers.findIndex(r => r.key === translationSetIdentifier);
@@ -159,6 +198,7 @@ export class DynamicTranslationService {
     if (this._locale) {
       this._translateService.use(this._locale);
     }
+    this._translationsUpdated.next();
   }
 
   private async resolveTranslations(translationResolvers: TranslationResolverState[]) {
