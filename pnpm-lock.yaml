@@ -1,9 +1,10 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
-  '@angular-architects/module-federation':
-    specifier: ^14.3.10
-    version: 14.3.10(@angular/common@15.2.0)(@angular/core@15.2.0)
   '@angular/animations':
     specifier: ^15.2.0
     version: 15.2.0(@angular/core@15.2.0)
@@ -42,6 +43,9 @@ dependencies:
     version: 0.11.5
 
 devDependencies:
+  '@angular-architects/module-federation':
+    specifier: ^15.0.0
+    version: 15.0.0(@angular/common@15.2.0)(@angular/core@15.2.0)(@angular/platform-browser-dynamic@15.2.0)(rxjs@7.5.5)
   '@angular-devkit/build-angular':
     specifier: ^15.2.0
     version: 15.2.0(@angular/compiler-cli@15.2.0)(ng-packagr@15.2.2)(typescript@4.9.5)
@@ -113,31 +117,39 @@ packages:
       '@jridgewell/trace-mapping': 0.3.13
     dev: true
 
-  /@angular-architects/module-federation-runtime@14.3.10(@angular/common@15.2.0)(@angular/core@15.2.0):
-    resolution: {integrity: sha512-KrKyl8DDs5YF6XS8h0v3ca/lajHWlTkk9sxFQR4r1Pxg8JfQVRmkIqfkYChGm+0BidMB7Vk5fM/w5N/0FNofiQ==}
+  /@angular-architects/module-federation-runtime@15.0.0(@angular/common@15.2.0)(@angular/core@15.2.0)(@angular/platform-browser-dynamic@15.2.0):
+    resolution: {integrity: sha512-gwOGY5gklt9pSGPMgJzzMIqPKTtQVKp2wfMPm6BKdNT6cgv/3XsAZt3DYyIxtJqt+M6ArwPlk+COLW7KrelvQw==}
     peerDependencies:
-      '@angular/common': '>=14.0.0'
-      '@angular/core': '>=14.0.0'
+      '@angular/common': '>=15.0.0'
+      '@angular/core': '>=15.0.0'
+      '@angular/platform-browser-dynamic': '>=15.0.0'
     dependencies:
       '@angular/common': 15.2.0(@angular/core@15.2.0)(rxjs@7.5.5)
       '@angular/core': 15.2.0(rxjs@7.5.5)(zone.js@0.11.5)
+      '@angular/platform-browser-dynamic': 15.2.0(@angular/common@15.2.0)(@angular/compiler@15.2.0)(@angular/core@15.2.0)(@angular/platform-browser@15.2.0)
       tslib: 2.5.0
-    dev: false
+    dev: true
 
-  /@angular-architects/module-federation@14.3.10(@angular/common@15.2.0)(@angular/core@15.2.0):
-    resolution: {integrity: sha512-6D7AJgCByrZd9n+erFHbz6tLiIxuVl0csh1q604cVYpX0mGPivDw6t0vaXz4VTl2nmvai50tKr48l++oW2KspQ==}
+  /@angular-architects/module-federation@15.0.0(@angular/common@15.2.0)(@angular/core@15.2.0)(@angular/platform-browser-dynamic@15.2.0)(rxjs@7.5.5):
+    resolution: {integrity: sha512-tC2+XxgEieQe2aiPk2HllDuFwe0HuaIxuQMV0J3nHnhfunegT5IN4e4rBsn0P7/k8uXnImopy9tgxAb+M9c0xQ==}
+    peerDependencies:
+      '@angular/common': '>=15.0.0'
+      '@angular/core': '>=15.0.0'
+      '@angular/platform-browser-dynamic': '>=15.0.0'
+      rxjs: '>=6.6.3'
     dependencies:
-      '@angular-architects/module-federation-runtime': 14.3.10(@angular/common@15.2.0)(@angular/core@15.2.0)
+      '@angular-architects/module-federation-runtime': 15.0.0(@angular/common@15.2.0)(@angular/core@15.2.0)(@angular/platform-browser-dynamic@15.2.0)
+      '@angular/common': 15.2.0(@angular/core@15.2.0)(rxjs@7.5.5)
+      '@angular/core': 15.2.0(rxjs@7.5.5)(zone.js@0.11.5)
+      '@angular/platform-browser-dynamic': 15.2.0(@angular/common@15.2.0)(@angular/compiler@15.2.0)(@angular/core@15.2.0)(@angular/platform-browser@15.2.0)
       callsite: 1.0.0
       node-fetch: 2.6.7
-      rxjs: 6.6.7
-      semver: 7.3.7
+      rxjs: 7.5.5
+      semver: 7.3.8
       word-wrap: 1.2.3
     transitivePeerDependencies:
-      - '@angular/common'
-      - '@angular/core'
       - encoding
-    dev: false
+    dev: true
 
   /@angular-devkit/architect@0.1502.0(chokidar@3.5.3):
     resolution: {integrity: sha512-/HmyAQhb4BNbcVRL2uaLwrJAAeYVUD42Bipoq8+kUNzoRv9QqJTIOx+2fSsmwBk8C+Jx3184UD3SfUmEnFPt4g==}
@@ -415,7 +427,6 @@ packages:
     dependencies:
       '@angular/core': 15.2.0(rxjs@7.5.5)(zone.js@0.11.5)
       tslib: 2.4.0
-    dev: false
 
   /@angular/cli@15.2.0:
     resolution: {integrity: sha512-Zy1kmcvqoQf316eirfxkS5vb8/3B9btZf0YvZH/hDHmAyzAs8cwfirU+ClhwLLb/T9i7HnB0YS+Pdz0XaQa/jQ==}
@@ -456,7 +467,6 @@ packages:
       '@angular/core': 15.2.0(rxjs@7.5.5)(zone.js@0.11.5)
       rxjs: 7.5.5
       tslib: 2.4.0
-    dev: false
 
   /@angular/compiler-cli@15.2.0(@angular/compiler@15.2.0)(typescript@4.9.5):
     resolution: {integrity: sha512-ETnRBdY/LGcmDRQ9GQc9KyCd1kuRnj+Y9luq2dCTMysP+NgylmYoGDsJOsDKm6SzPo+B4PSAyHX2J4CVQFHpPg==}
@@ -535,7 +545,6 @@ packages:
       '@angular/core': 15.2.0(rxjs@7.5.5)(zone.js@0.11.5)
       '@angular/platform-browser': 15.2.0(@angular/animations@15.2.0)(@angular/common@15.2.0)(@angular/core@15.2.0)
       tslib: 2.4.0
-    dev: false
 
   /@angular/platform-browser@15.2.0(@angular/animations@15.2.0)(@angular/common@15.2.0)(@angular/core@15.2.0):
     resolution: {integrity: sha512-+FB+KMoRHktF/MR7hn8ofubVLpu3+KZpudupKlxthPSL2KPMJn6h00ewrJDv3W+MtpqphqCjQSLmKpzw2UKKug==}
@@ -552,7 +561,6 @@ packages:
       '@angular/common': 15.2.0(@angular/core@15.2.0)(rxjs@7.5.5)
       '@angular/core': 15.2.0(rxjs@7.5.5)(zone.js@0.11.5)
       tslib: 2.4.0
-    dev: false
 
   /@angular/router@15.2.0(@angular/common@15.2.0)(@angular/core@15.2.0)(@angular/platform-browser@15.2.0)(rxjs@7.5.5):
     resolution: {integrity: sha512-FPmGP7DmJtzqgmM7FMs8bfe3vX0r6cdI4zbHMEVv7Zbn/yApgAzAsX7MXJYy7Oi45S6ZTH7SIVHVYVAqay1NVQ==}
@@ -3612,7 +3620,7 @@ packages:
 
   /callsite@1.0.0:
     resolution: {integrity: sha512-0vdNRFXn5q+dtOqjfFtmtlI9N2eVZ7LMyEV2iKC5mEEFvSg/69Ml6b/WU2qF8W1nLRa0wiSrDT3Y5jOHZCwKPQ==}
-    dev: false
+    dev: true
 
   /callsites@3.1.0:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
@@ -5622,6 +5630,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
+    dev: true
 
   /lru-cache@7.10.1:
     resolution: {integrity: sha512-BQuhQxPuRl79J5zSXRP+uNzPOyZw2oFI9JLRQ80XswSvg21KMKNtQza9eF42rfI/3Z40RvzBdXgziEkudzjo8A==}
@@ -6105,7 +6114,7 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
-    dev: false
+    dev: true
 
   /node-forge@1.3.1:
     resolution: {integrity: sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==}
@@ -7063,6 +7072,7 @@ packages:
     engines: {npm: '>=2.0.0'}
     dependencies:
       tslib: 1.14.1
+    dev: true
 
   /rxjs@7.5.5:
     resolution: {integrity: sha512-sy+H0pQofO95VDmFLzyaw9xNJU4KTRSwQIGM6+iG3SypAtCiLDzpeG8sJrNCWn2Up9km+KhkvTdbkrdy+yzZdw==}
@@ -7197,6 +7207,7 @@ packages:
     hasBin: true
     dependencies:
       lru-cache: 6.0.0
+    dev: true
 
   /semver@7.3.8:
     resolution: {integrity: sha512-NB1ctGL5rlHrPJtFDVIVzTyQylMLu9N9VICA6HSFJo8MCGVTMW6gfpicwKmmK/dAjTOrqu5l63JJOpDSrAis3A==}
@@ -7669,7 +7680,7 @@ packages:
 
   /tr46@0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
-    dev: false
+    dev: true
 
   /tree-kill@1.2.2:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
@@ -7754,12 +7765,14 @@ packages:
 
   /tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
+    dev: true
 
   /tslib@2.4.0:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
 
   /tslib@2.5.0:
     resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
+    dev: true
 
   /tsutils@3.21.0(typescript@4.9.5):
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
@@ -7981,7 +7994,7 @@ packages:
 
   /webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
-    dev: false
+    dev: true
 
   /webpack-dev-middleware@5.3.3(webpack@5.75.0):
     resolution: {integrity: sha512-hj5CYrY0bZLB+eTO+x/j67Pkrquiy7kWepMHmUMoPsmcUaeEnQJqFzHJOyxgWlq746/wUuA64p9ta34Kyb01pA==}
@@ -8145,7 +8158,7 @@ packages:
     dependencies:
       tr46: 0.0.3
       webidl-conversions: 3.0.1
-    dev: false
+    dev: true
 
   /which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
@@ -8176,6 +8189,7 @@ packages:
   /word-wrap@1.2.3:
     resolution: {integrity: sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==}
     engines: {node: '>=0.10.0'}
+    dev: true
 
   /wrap-ansi@7.0.0:
     resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==}
@@ -8217,6 +8231,7 @@ packages:
 
   /yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
+    dev: true
 
   /yaml@1.10.2:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
