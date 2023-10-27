@@ -1,3 +1,4 @@
+import type { loadRemoteModule as LoadRemoteModule } from '@angular-architects/native-federation-runtime';
 import { environment, Environment, initializeEnvironment, reuseEnvironment } from '../environment';
 import { AppInitBehavior } from '../models/app-init-behavior.type';
 import { ModuleDefinitions } from '../models/module-definitions.type';
@@ -10,6 +11,7 @@ export const initializeApp = async (
     modulePath?: string;
     environmentPath?: string;
     disableParentEnvironmentReuse?: boolean;
+    loadRemoteModule?: typeof LoadRemoteModule;
   }
 ) => {
   const doLoadModules = behavior === 'loadModulesAndEnvironment' || behavior === 'loadModules';
@@ -40,7 +42,11 @@ export const initializeApp = async (
   }
 
   if (doLoadModules) {
-    await Promise.all(moduleDefs.modules.map(moduleToLoad => loadModule(moduleToLoad)));
+    const moduleMap: Record<string, string> = {};
+    moduleDefs.modules.forEach(module => {
+      moduleMap[module.name] = module.url;
+    });
+    await Promise.all(moduleDefs.modules.map(moduleToLoad => loadModule(moduleToLoad, settings!.loadRemoteModule!)));
     if (!environment.production) {
       console.debug(
         'Loaded modules:',

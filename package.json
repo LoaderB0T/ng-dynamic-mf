@@ -39,6 +39,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-architects/native-federation-runtime": "^0.9.1",
     "@angular/animations": "^15.2.0",
     "@angular/common": "^15.2.0",
     "@angular/compiler": "^15.2.0",
@@ -54,10 +55,10 @@
   },
   "prettier": "@awdware/prettier-config",
   "peerDependencies": {
-    "@angular-architects/module-federation": ">=15.0.0"
+    "@angular-architects/native-federation": ">=16.0.0"
   },
   "devDependencies": {
-    "@angular-architects/module-federation": "^15.0.0",
+    "@angular-architects/native-federation": "^16.3.4",
     "@angular-devkit/build-angular": "^15.2.0",
     "@angular-eslint/builder": "^14.0.3",
     "@angular-eslint/eslint-plugin": "^14.0.3",
