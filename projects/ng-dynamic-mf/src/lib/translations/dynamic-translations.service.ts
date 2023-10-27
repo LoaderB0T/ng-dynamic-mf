@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, filter, firstValueFrom, map, Observable, startWith } from 'rxjs';
 import { resourceMapper } from '../resource-map';
 import { TranslateService } from './service.type';
 import {
@@ -143,14 +143,25 @@ export class DynamicTranslationService {
       );
     }
 
-    return this._translateService.onLangChange.pipe(
-      switchMap(() =>
-        this._translationsUpdated.pipe(
-          map(() => this.isTranslationSetLoadedSync(translationSetIdentifier)),
-          distinctUntilChanged()
-        )
-      )
+    return combineLatest([this._translateService.onLangChange.pipe(startWith(undefined)), this._translationsUpdated]).pipe(
+      map(() => this.isTranslationSetLoadedSync(translationSetIdentifier)),
+      distinctUntilChanged()
     );
+  }
+
+  /**
+   * Resolves if a translation set is loaded for the current locale.
+   * @param translationSetIdentifier The identifier of the translations (e.g. the name of the module)
+   * @returns Promise that resolves if the translation set is loaded, never rejects (use isTranslationSetLoaded() to check if the translation set is loaded)
+   */
+  public async ensureTranslationSetIsLoaded(translationSetIdentifier: string): Promise<void> {
+    if (!this._translateService) {
+      throw new Error(
+        'DynamicTranslationService: TranslateService not found. Make sure you have @ngx-translate/core installed and called setTranslateService()'
+      );
+    }
+
+    await firstValueFrom(this.isTranslationSetLoaded(translationSetIdentifier).pipe(filter(loaded => loaded)));
   }
 
   /**
