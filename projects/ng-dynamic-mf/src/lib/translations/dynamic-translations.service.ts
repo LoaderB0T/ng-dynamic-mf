@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, distinctUntilChanged, filter, firstValueFrom, map, Observable, startWith } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  distinctUntilChanged,
+  filter,
+  firstValueFrom,
+  map,
+  Observable,
+  startWith,
+} from 'rxjs';
 import { resourceMapper } from '../resource-map';
 import { TranslateService } from './service.type';
 import {
   isAssetResolver,
   TranslationResolver,
   TranslationResolverMultiLocale,
-  TranslationResolverSet
+  TranslationResolverSet,
 } from './translation-resolver.type';
 import { TranslationType } from './translations.type';
 
@@ -26,7 +35,7 @@ type TranslationStore = {
  * call setTranslateService() before using this service.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DynamicTranslationService {
   private _translateService: TranslateService | null = null;
@@ -75,7 +84,10 @@ export class DynamicTranslationService {
    * @param translationSetIdentifier The identifier of the translations (e.g. the name of the module)
    * @param translationResolvers The resolvers for the translations
    */
-  public registerTranslationSet(translationSetIdentifier: string, translationResolvers: TranslationResolverMultiLocale) {
+  public registerTranslationSet(
+    translationSetIdentifier: string,
+    translationResolvers: TranslationResolverMultiLocale
+  ) {
     this.doRegisterTranslationSet(translationSetIdentifier, translationResolvers);
     this.invalidateTranslations();
   }
@@ -91,13 +103,24 @@ export class DynamicTranslationService {
     this.invalidateTranslations();
   }
 
-  private doRegisterTranslationSet(translationSetIdentifier: string, translationResolvers: TranslationResolverMultiLocale) {
+  private doRegisterTranslationSet(
+    translationSetIdentifier: string,
+    translationResolvers: TranslationResolverMultiLocale
+  ) {
     Object.keys(translationResolvers).forEach(locale => {
-      this.registerSingleTranslation(translationSetIdentifier, locale, translationResolvers[locale]);
+      this.registerSingleTranslation(
+        translationSetIdentifier,
+        locale,
+        translationResolvers[locale]
+      );
     });
   }
 
-  private registerSingleTranslation(translationSetIdentifier: string, locale: string, translationResolver: TranslationResolver) {
+  private registerSingleTranslation(
+    translationSetIdentifier: string,
+    locale: string,
+    translationResolver: TranslationResolver
+  ) {
     if (!this._translateService) {
       throw new Error(
         'DynamicTranslationService: TranslateService not found. Make sure you have @ngx-translate/core installed and called setTranslateService()'
@@ -110,7 +133,11 @@ export class DynamicTranslationService {
       existing.resolver = translationResolver;
       existing.loadedTranslations = null;
     } else {
-      translationResolvers.push({ resolver: translationResolver, key: translationSetIdentifier, loadedTranslations: null });
+      translationResolvers.push({
+        resolver: translationResolver,
+        key: translationSetIdentifier,
+        loadedTranslations: null,
+      });
       this._translationStore[locale] ??= translationResolvers;
     }
   }
@@ -143,7 +170,10 @@ export class DynamicTranslationService {
       );
     }
 
-    return combineLatest([this._translateService.onLangChange.pipe(startWith(undefined)), this._translationsUpdated]).pipe(
+    return combineLatest([
+      this._translateService.onLangChange.pipe(startWith(undefined)),
+      this._translationsUpdated,
+    ]).pipe(
       map(() => this.isTranslationSetLoadedSync(translationSetIdentifier)),
       distinctUntilChanged()
     );
@@ -161,7 +191,9 @@ export class DynamicTranslationService {
       );
     }
 
-    await firstValueFrom(this.isTranslationSetLoaded(translationSetIdentifier).pipe(filter(loaded => loaded)));
+    await firstValueFrom(
+      this.isTranslationSetLoaded(translationSetIdentifier).pipe(filter(loaded => loaded))
+    );
   }
 
   /**
@@ -223,7 +255,9 @@ export class DynamicTranslationService {
     await Promise.all(promises);
   }
 
-  private mergeLoadedTranslations(translationResolvers: TranslationResolverState[]): TranslationType {
+  private mergeLoadedTranslations(
+    translationResolvers: TranslationResolverState[]
+  ): TranslationType {
     const translations: TranslationType = {};
     translationResolvers.forEach(translationResolver => {
       if (!translationResolver.loadedTranslations) {
@@ -234,7 +268,9 @@ export class DynamicTranslationService {
     return translations;
   }
 
-  private async resolveTranslation(translationResolver: TranslationResolver): Promise<TranslationType> {
+  private async resolveTranslation(
+    translationResolver: TranslationResolver
+  ): Promise<TranslationType> {
     let promiseResolver: Promise<TranslationType>;
     // check if translationResolver is a promise
     if (translationResolver instanceof Promise) {
@@ -247,7 +283,10 @@ export class DynamicTranslationService {
         promiseResolver = Promise.resolve(fnResult);
       }
     } else if (isAssetResolver(translationResolver)) {
-      promiseResolver = this.loadLocaleFromAssetPath(translationResolver.moduleName, translationResolver.resovler, this._locale!);
+      promiseResolver = this.loadLocaleFromAssetPath(
+        translationResolver.moduleName,
+        translationResolver.path
+      );
     } else {
       promiseResolver = Promise.resolve(translationResolver);
     }
@@ -257,10 +296,9 @@ export class DynamicTranslationService {
 
   private async loadLocaleFromAssetPath(
     moduleName: string,
-    resolver: (locale: string) => string,
-    locale: string
+    path: string
   ): Promise<TranslationType> {
-    const resourceUrl = resourceMapper(moduleName, resolver(locale));
+    const resourceUrl = resourceMapper(moduleName, path);
 
     const response = await fetch(resourceUrl);
     const content = (await response.json()) as TranslationType;
