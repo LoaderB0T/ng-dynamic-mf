@@ -1,46 +1,80 @@
+import type { loadRemoteModule as LoadRemoteModule } from '@angular-architects/native-federation-runtime';
 import { environment, Environment, initializeEnvironment, reuseEnvironment } from '../environment';
-import { AppInitBehavior } from '../models/app-init-behavior.type';
 import { ModuleDefinitions } from '../models/module-definitions.type';
 import { loadModule } from './load-module';
 import { loadedModules } from './loaded-modules';
 
-export const initializeApp = async (
-  behavior: AppInitBehavior = 'loadModulesAndEnvironment',
-  settings?: {
-    modulePath?: string;
-    environmentPath?: string;
-    disableParentEnvironmentReuse?: boolean;
-  }
-) => {
-  const doLoadModules = behavior === 'loadModulesAndEnvironment' || behavior === 'loadModules';
-  const doLoadEnvironment = behavior === 'loadModulesAndEnvironment' || behavior === 'loadEnvironment';
+type OptionalSettings = {
+  modulePath: string;
+  environmentPath: string;
+  /**
+   * Describes how the environment variables should be resolved.
+   * - `none`: No environment variables are loaded.
+   * - `loadAndReuse` *(default)*: The environment variables are loaded and reused from existing loaded environments.
+   * - `load`: The environment variables are loaded, but none are reused.
+   * - `reuse`: The environment variables are reused from existing loaded environments but not loaded.
+   */
+  loadEnvironment: 'none' | 'loadAndReuse' | 'load' | 'reuse';
+};
+type RequiredSettings =
+  | {
+      type: 'host';
+      loadRemoteModule: typeof LoadRemoteModule;
+    }
+  | {
+      type: 'remote';
+    };
 
-  const fetchModules = doLoadModules
-    ? fetch(settings?.modulePath ?? '/modules.json', { cache: 'no-cache' })
-        .then(x => x.json())
-        .catch(() => {
-          throw new Error('Failed to load modules.json');
-        })
-    : Promise.resolve([]);
+export type AppStartupSettings = Partial<OptionalSettings> & RequiredSettings;
+type AppStartupSettingsInternal = OptionalSettings & RequiredSettings;
+
+export const initializeApp = async (settings: AppStartupSettings) => {
+  const actualSettings: AppStartupSettingsInternal = {
+    loadEnvironment: 'loadAndReuse',
+    modulePath: '/modules.json',
+    environmentPath: '/environment.json',
+    ...settings,
+  };
+
+  const doLoadEnvironment =
+    actualSettings.loadEnvironment === 'loadAndReuse' || actualSettings.loadEnvironment === 'load';
+
+  const fetchModules =
+    settings.type === 'host'
+      ? fetch(actualSettings.modulePath, { cache: 'no-cache' })
+          .then(x => x.json())
+          .catch(() => {
+            throw new Error('Failed to load modules.json');
+          })
+      : Promise.resolve([]);
 
   const fetchEnvironment = doLoadEnvironment
-    ? fetch(settings?.environmentPath ?? '/environment.json', { cache: 'no-cache' })
+    ? fetch(actualSettings.environmentPath, { cache: 'no-cache' })
         .then(x => x.json())
         .catch(() => {
           throw new Error('Failed to load environment.json');
         })
     : Promise.resolve({});
 
-  const [moduleDefs, env] = (await Promise.all([fetchModules, fetchEnvironment])) as [ModuleDefinitions, Environment];
+  const [moduleDefs, env] = (await Promise.all([fetchModules, fetchEnvironment])) as [
+    ModuleDefinitions,
+    Environment,
+  ];
   if (doLoadEnvironment) {
-    initializeEnvironment(env, settings?.disableParentEnvironmentReuse);
+    initializeEnvironment(env, actualSettings.loadEnvironment === 'load');
   }
-  if (behavior === 'reuseEnvironment') {
+  if (actualSettings.loadEnvironment === 'reuse') {
     reuseEnvironment();
   }
 
-  if (doLoadModules) {
-    await Promise.all(moduleDefs.modules.map(moduleToLoad => loadModule(moduleToLoad)));
+  if (settings.type === 'host') {
+    const moduleMap: Record<string, string> = {};
+    moduleDefs.modules.forEach(module => {
+      moduleMap[module.name] = module.url;
+    });
+    await Promise.all(
+      moduleDefs.modules.map(moduleToLoad => loadModule(moduleToLoad, settings.loadRemoteModule))
+    );
     if (!environment.production) {
       console.debug(
         'Loaded modules:',

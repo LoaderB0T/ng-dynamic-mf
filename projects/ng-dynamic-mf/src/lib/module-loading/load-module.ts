@@ -1,18 +1,17 @@
-import { loadRemoteModule } from '@angular-architects/module-federation';
+import type { loadRemoteModule as LoadRemoteModule } from '@angular-architects/native-federation-runtime';
 import { basePaths, resourceMapper } from '../resource-map/resource-mapper';
 import { environment } from '../environment';
 import { loadedModules } from './loaded-modules';
 import { ModuleDefinition } from '../models/module-definition.type';
 import { join } from '../utils';
 
-export const loadModule = async (moduleToLoad: ModuleDefinition) => {
+export const loadModule = async (moduleToLoad: ModuleDefinition, loadRemoteModule: typeof LoadRemoteModule) => {
   fixModuleToLoadUrl(moduleToLoad);
 
   const hash = moduleToLoad.hash ? `?${moduleToLoad.hash}` : '';
   const loadedModule = await loadRemoteModule({
     exposedModule: './Module',
-    remoteEntry: `${join(moduleToLoad.url, 'remoteEntry.js')}${hash}`,
-    type: 'module'
+    remoteEntry: `${join(moduleToLoad.url, 'remoteEntry.json')}${hash}`
   });
   basePaths[moduleToLoad.name] = moduleToLoad.url;
   loadedModules.push(loadedModule[moduleToLoad.ngModuleName]);

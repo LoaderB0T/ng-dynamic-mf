@@ -6,7 +6,7 @@ import { TranslationType } from './translations.type';
  */
 export type AssetResolver = {
   moduleName: string;
-  resovler: (locale: string) => string;
+  path: string;
 };
 
 export function isAssetResolver(resolver: TranslationResolver): resolver is AssetResolver {
