@@ -42,6 +42,20 @@ export const reuseEnvironment = () => {
 };
 
 /**
+ * Copies all environment variables into an iframe
+ * Make sure to call this mehtod before the angular app in the iframe is bootstrapped
+ * @param iframe the iframe to copy the environment into
+ */
+export function copyEnvironmentIntoIFrame(iframe: HTMLIFrameElement) {
+  const env = (window as any).__ng_dynamic_mf_env__;
+  if (env) {
+    (iframe.contentWindow as any).__ng_dynamic_mf_env__ = env;
+  } else {
+    console.error('Environment (__ng_dynamic_mf_env__) is not defined');
+  }
+}
+
+/**
  * Use this to set a custom environment variable at runtime
  * @param key the key of the environment variable
  * @param value the value of the environment variable
