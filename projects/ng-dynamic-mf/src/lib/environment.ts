@@ -20,7 +20,10 @@ export const envValidator = (defaultEnvironment: Environment) => {
 };
 
 // @internal
-export const initializeEnvironment = (env: Environment, disableParentEnvironmentReuse?: boolean) => {
+export const initializeEnvironment = (
+  env: Environment,
+  disableParentEnvironmentReuse?: boolean
+) => {
   if (disableParentEnvironmentReuse || !reuseEnvironment()) {
     (window as any).__ng_dynamic_mf_env__ = env;
   }
@@ -42,11 +45,23 @@ export const reuseEnvironment = () => {
 };
 
 /**
+ * Use this to check if the ng-dynamic-mf environment is available.
+ * Will be false if ng-dynamic-mf was not used to bootstrap the app and no environment was set manually
+ */
+export function hasEnvironment() {
+  return !!(window as any).__ng_dynamic_mf_env__;
+}
+
+/**
  * Copies all environment variables into an iframe
  * Make sure to call this mehtod before the angular app in the iframe is bootstrapped
  * @param iframe the iframe to copy the environment into
+ * @throws if the environment is not available. Check with `hasEnvironment()` before calling this method
  */
 export function copyEnvironmentIntoIFrame(iframe: HTMLIFrameElement) {
+  if (!hasEnvironment()) {
+    throw new Error('ng-dynamic-mf environment is not available.');
+  }
   const env = (window as any).__ng_dynamic_mf_env__;
   if (env) {
     (iframe.contentWindow as any).__ng_dynamic_mf_env__ = env;
