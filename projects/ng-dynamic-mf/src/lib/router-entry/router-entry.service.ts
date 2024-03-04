@@ -4,7 +4,7 @@ import { findParentOfRouteRecursive } from './find-parent-of-route-recursive';
 import { isAlreadyInConfig } from './is-already-in-config';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RouterEntryService {
   private readonly _router: Router;
@@ -23,7 +23,13 @@ export class RouterEntryService {
     if (duplicate) {
       return;
     }
-    foundOutlet.children = [...foundOutlet.children!, ...routeConfig];
+    const indexInOutlet =
+      foundOutlet.children?.findIndex(route => route.path === entryPointName) ?? 0;
+    foundOutlet.children = [
+      ...foundOutlet.children!.slice(0, indexInOutlet),
+      ...routeConfig,
+      ...foundOutlet.children!.slice(indexInOutlet),
+    ];
     this._router.resetConfig(hostRoutes);
   }
 }
