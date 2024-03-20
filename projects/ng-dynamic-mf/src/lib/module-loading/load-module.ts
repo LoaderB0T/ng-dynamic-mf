@@ -1,17 +1,20 @@
-import type { loadRemoteModule as LoadRemoteModule } from '@angular-architects/native-federation-runtime';
 import { basePaths, resourceMapper } from '../resource-map/resource-mapper';
 import { environment } from '../environment';
 import { loadedModules } from './loaded-modules';
 import { ModuleDefinition } from '../models/module-definition.type';
 import { join } from '../utils';
+import { LoadRemoteModule } from './load-remote-module.type';
 
-export const loadModule = async (moduleToLoad: ModuleDefinition, loadRemoteModule: typeof LoadRemoteModule) => {
+export const loadModule = async (
+  moduleToLoad: ModuleDefinition,
+  loadRemoteModule: LoadRemoteModule
+) => {
   fixModuleToLoadUrl(moduleToLoad);
 
   const hash = moduleToLoad.hash ? `?${moduleToLoad.hash}` : '';
   const loadedModule = await loadRemoteModule({
     exposedModule: './Module',
-    remoteEntry: `${join(moduleToLoad.url, 'remoteEntry.json')}${hash}`
+    remoteEntry: `${join(moduleToLoad.url, 'remoteEntry.json')}${hash}`,
   });
   basePaths[moduleToLoad.name] = moduleToLoad.url;
   loadedModules.push(loadedModule[moduleToLoad.ngModuleName]);
@@ -21,7 +24,10 @@ export const loadModule = async (moduleToLoad: ModuleDefinition, loadRemoteModul
     link.id = `global-style-${moduleToLoad.name}`;
     link.rel = 'stylesheet';
     link.type = 'text/css';
-    link.href = resourceMapper(moduleToLoad.name, moduleToLoad.globalStyleBundleName ?? 'global-styles.css');
+    link.href = resourceMapper(
+      moduleToLoad.name,
+      moduleToLoad.globalStyleBundleName ?? 'global-styles.css'
+    );
     link.media = 'all';
     head.appendChild(link);
   }

@@ -4,11 +4,13 @@
 
 # ng-dynamic-mf
 
-Truly dynamic modules at runtime with Native Federation!
+Truly dynamic modules at runtime with Module / Native Federation!
 
 ## Motivation 💥
 
-Native Federation builds upon the concepts of Module Federation without the need for webpack. For Angular, there is the excellent [Module Federation Plugin](https://github.com/angular-architects/module-federation-plugin/blob/main/libs/native-federation/README.md). ng-dynamic-mf now leverages Native Federation, bringing modularity in Angular to the next level by providing methods to easily load modules at runtime.
+ng-dynamic-mf works with both module federation and native federation. In the following, I will refer to both as "module federation" for simplicity.
+
+Module Federation builds upon the concepts of Module Federation without the need for webpack. For Angular, there is the excellent [Module Federation Plugin](https://github.com/angular-architects/module-federation-plugin/blob/main/README.md). ng-dynamic-mf now leverages Module Federation, bringing modularity in Angular to the next level by providing methods to easily load modules at runtime.
 
 ## Features 🔥
 
@@ -30,7 +32,7 @@ Native Federation builds upon the concepts of Module Federation without the need
 
 ✅ Use with Nx with [nx-dynamic-mf](https://github.com/LoaderB0T/nx-dynamic-mf)
 
-This project aims to improve the general experience of developers using Native Federation in Angular. Even if you don't _need_ truly dynamic modules, you can still benefit from this project.
+This project aims to improve the general experience of developers using Module Federation in Angular. Even if you don't _need_ truly dynamic modules, you can still benefit from this project.
 
 ## Built With 🔧
 
@@ -54,10 +56,13 @@ ng-dynamic-mf provides an `initializeApp` method that can be used to bootstrap t
 Example:
 
 ```typescript
+// This example uses native federation!
+
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { initializeApp, environment } from 'ng-dynamic-mf';
-// Due to an issue in the Module Federation Plugin, we need to import loadRemoteModule from the plugin directly and pass it to ng-dynamic-mf
+import { initializeApp } from 'ng-dynamic-mf/nf';
+import { environment } from 'ng-dynamic-mf';
+// Due to an issue in the Module Federation Plugin, we need to import loadRemoteModule from the plugin directly and pass it to ng-dynamic-mf. This is only required for the native federation use case.
 import { loadRemoteModule } from '@angular-architects/native-federation';
 
 initializeApp({

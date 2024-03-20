@@ -27,6 +27,9 @@
     "dynamic",
     "module-federation",
     "esbuild",
+    "native",
+    "microfrontend",
+    "micro-frontend",
     "native-federation"
   ],
   "scripts": {
@@ -55,12 +58,9 @@
     "zone.js": "~0.14.3"
   },
   "prettier": "@awdware/prettier-config",
-  "peerDependencies": {
-    "@angular-architects/native-federation": ">=17.0.7",
-    "@angular-architects/native-federation-runtime": ">=0.9.1"
-  },
   "devDependencies": {
-    "@angular-architects/native-federation": "^17.0.7",
+    "@angular-architects/module-federation": "^17.0.8",
+    "@angular-architects/native-federation": "^17.1.7",
     "@angular-architects/native-federation-runtime": "^0.9.1",
     "@angular-devkit/build-angular": "^17.0.9",
     "@angular-eslint/builder": "^17.2.0",
