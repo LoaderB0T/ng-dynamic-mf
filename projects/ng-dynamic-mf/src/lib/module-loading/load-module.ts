@@ -5,16 +5,21 @@ import { ModuleDefinition } from '../models/module-definition.type';
 import { join } from '../utils';
 import { LoadRemoteModule } from './load-remote-module.type';
 
+export type MfOrNf = 'mf' | 'nf';
+
 export const loadModule = async (
   moduleToLoad: ModuleDefinition,
-  loadRemoteModule: LoadRemoteModule
+  loadRemoteModule: LoadRemoteModule,
+  mfOrNf: MfOrNf
 ) => {
   fixModuleToLoadUrl(moduleToLoad);
+
+  const remoteEntryFileName = mfOrNf === 'nf' ? 'remoteEntry.json' : 'remoteEntry.js';
 
   const hash = moduleToLoad.hash ? `?${moduleToLoad.hash}` : '';
   const loadedModule = await loadRemoteModule({
     exposedModule: './Module',
-    remoteEntry: `${join(moduleToLoad.url, 'remoteEntry.json')}${hash}`,
+    remoteEntry: `${join(moduleToLoad.url, remoteEntryFileName)}${hash}`,
   });
   basePaths[moduleToLoad.name] = moduleToLoad.url;
   loadedModules.push(loadedModule[moduleToLoad.ngModuleName]);

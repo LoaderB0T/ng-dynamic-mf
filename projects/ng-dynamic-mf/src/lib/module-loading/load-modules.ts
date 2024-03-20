@@ -1,13 +1,14 @@
 import { environment, Environment, initializeEnvironment, reuseEnvironment } from '../environment';
 import { ModuleDefinitions } from '../models/module-definitions.type';
-import { loadModule } from './load-module';
+import { loadModule, MfOrNf } from './load-module';
 import { AppStartupSettings, AppStartupSettingsInternal } from './load-module-settings.type';
 import { LoadRemoteModule } from './load-remote-module.type';
 import { loadedModules } from './loaded-modules';
 
 export const initializeAppInternal = async (
   settings: AppStartupSettings,
-  loadRemoteModule: LoadRemoteModule
+  loadRemoteModule: LoadRemoteModule,
+  mfOrNf: MfOrNf
 ) => {
   const actualSettings: AppStartupSettingsInternal = {
     loadEnvironment: 'loadAndReuse',
@@ -53,7 +54,7 @@ export const initializeAppInternal = async (
       moduleMap[module.name] = module.url;
     });
     await Promise.all(
-      moduleDefs.modules.map(moduleToLoad => loadModule(moduleToLoad, loadRemoteModule))
+      moduleDefs.modules.map(moduleToLoad => loadModule(moduleToLoad, loadRemoteModule, mfOrNf))
     );
     if (!environment.production) {
       console.debug(

@@ -11,5 +11,5 @@ export function initializeApp(settings: AppStartupSettings) {
     return module;
   };
 
-  return initializeAppInternal(settings, lrm);
+  return initializeAppInternal(settings, lrm, 'mf');
 }

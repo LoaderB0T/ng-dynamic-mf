@@ -25,5 +25,5 @@ export function initializeApp(settings: AppStartupSettingsNf) {
     }
   };
 
-  return initializeAppInternal(settings, lrm);
+  return initializeAppInternal(settings, lrm, 'nf');
 }
