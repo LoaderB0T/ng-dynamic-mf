@@ -1,34 +1,14 @@
-import type { loadRemoteModule as LoadRemoteModule } from '@angular-architects/native-federation-runtime';
 import { environment, Environment, initializeEnvironment, reuseEnvironment } from '../environment';
 import { ModuleDefinitions } from '../models/module-definitions.type';
 import { loadModule } from './load-module';
+import { AppStartupSettings, AppStartupSettingsInternal } from './load-module-settings.type';
+import { LoadRemoteModule } from './load-remote-module.type';
 import { loadedModules } from './loaded-modules';
 
-type OptionalSettings = {
-  modulePath: string;
-  environmentPath: string;
-  /**
-   * Describes how the environment variables should be resolved.
-   * - `none`: No environment variables are loaded.
-   * - `loadAndReuse` *(default)*: The environment variables are loaded and reused from existing loaded environments.
-   * - `load`: The environment variables are loaded, but none are reused.
-   * - `reuse`: The environment variables are reused from existing loaded environments but not loaded.
-   */
-  loadEnvironment: 'none' | 'loadAndReuse' | 'load' | 'reuse';
-};
-type RequiredSettings =
-  | {
-      type: 'host';
-      loadRemoteModule: typeof LoadRemoteModule;
-    }
-  | {
-      type: 'remote';
-    };
-
-export type AppStartupSettings = Partial<OptionalSettings> & RequiredSettings;
-type AppStartupSettingsInternal = OptionalSettings & RequiredSettings;
-
-export const initializeApp = async (settings: AppStartupSettings) => {
+export const initializeAppInternal = async (
+  settings: AppStartupSettings,
+  loadRemoteModule: LoadRemoteModule
+) => {
   const actualSettings: AppStartupSettingsInternal = {
     loadEnvironment: 'loadAndReuse',
     modulePath: '/modules.json',
@@ -73,7 +53,7 @@ export const initializeApp = async (settings: AppStartupSettings) => {
       moduleMap[module.name] = module.url;
     });
     await Promise.all(
-      moduleDefs.modules.map(moduleToLoad => loadModule(moduleToLoad, settings.loadRemoteModule))
+      moduleDefs.modules.map(moduleToLoad => loadModule(moduleToLoad, loadRemoteModule))
     );
     if (!environment.production) {
       console.debug(

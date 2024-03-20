@@ -1,6 +1,6 @@
 {
   "name": "ng-dynamic-mf",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "license": "MIT",
   "author": {
     "name": "Janik Schumacher (LoaderB0T)",
@@ -24,10 +24,17 @@
     "translations",
     "styles",
     "dynamic",
-    "module-federation"
+    "module-federation",
+    "esbuild",
+    "native",
+    "microfrontend",
+    "micro-frontend",
+    "native-federation"
   ],
   "peerDependencies": {
     "@angular-architects/native-federation": ">=16.0.0",
+    "@angular-architects/native-federation-runtime": ">=0.9.1",
+    "@angular-architects/module-federation": ">=16.0.0",
     "@angular/common": ">=16.0.0",
     "@angular/core": ">=16.0.0",
     "@ngx-translate/core": ">=15.0.0"
@@ -37,6 +44,15 @@
   },
   "peerDependenciesMeta": {
     "@ngx-translate/core": {
+      "optional": true
+    },
+    "@angular-architects/native-federation": {
+      "optional": true
+    },
+    "@angular-architects/native-federation-runtime": {
+      "optional": true
+    },
+    "@angular-architects/module-federation": {
       "optional": true
     }
   }
