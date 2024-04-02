@@ -20,7 +20,7 @@ Module Federation builds upon the concepts of Module Federation without the need
 
 ✅ Modules can be loaded from any location (e.g., from a CDN) that can be unknown to the developer
 
-✅ Based on esbuild (fast)
+✅ Works with Webpack & ESBuild
 
 ✅ Modules can be deployed on demand without modifying the host/shell application
 
@@ -61,7 +61,7 @@ Example:
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { initializeApp } from 'ng-dynamic-mf/nf';
-import { environment } from 'ng-dynamic-mf';
+import { environment } from 'ng-dynamic-mf/environment';
 // Due to an issue in the Module Federation Plugin, we need to import loadRemoteModule from the plugin directly and pass it to ng-dynamic-mf. This is only required for the native federation use case.
 import { loadRemoteModule } from '@angular-architects/native-federation';
 
@@ -154,7 +154,7 @@ Bootstrapping a module app is similar to a regular Angular app. The only differe
 ```typescript
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { environment } from 'ng-dynamic-mf';
+import { environment } from 'ng-dynamic-mf/environment';
 
 import { AppModule } from './app/app.module';
 
@@ -196,13 +196,10 @@ When using translations in a module, they need to be loaded at runtime when the 
 Example of how to register german and english translations in the home module:
 
 ```typescript
-import { TranslateService } from '@ngx-translate/core';
-import { DynamicTranslationService } from 'ng-dynamic-mf';
+import { DynamicTranslationService } from 'ng-dynamic-mf/translate';
 
 export class HomeModule {
-  constructor(translateService: TranslateService, dynamicTranslationService: DynamicTranslationService) {
-    // Initialize the translation service (Has to be done only once)
-    dynamicTranslationService.setTranslateService(translateService);
+  constructor(dynamicTranslationService: DynamicTranslationService) {
     // Specify that assets/i18n/[..].json is the path to a translation file for each language. Other syntaxes are also supported (See inline documentation).
     // (Resolved with the resource mapper to the home module's assets folder) -> Works for standalone and shell use cases
     dynamicTranslationService.registerTranslationSet('home-i18n', {

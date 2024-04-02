@@ -25,6 +25,9 @@
     "paths": {
       "ng-dynamic-mf": [
         "./dist/index.d.ts"
+      ],
+      "ng-dynamic-mf/environment": [
+        "./dist/environment/index.d.ts"
       ]
     },
     "stripInternal": true,

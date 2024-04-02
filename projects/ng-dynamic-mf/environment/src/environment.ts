@@ -19,12 +19,11 @@ export const envValidator = (defaultEnvironment: Environment) => {
   });
 };
 
-// @internal
-export const initializeEnvironment = (
+export const ɵinitializeEnvironment = (
   env: Environment,
   disableParentEnvironmentReuse?: boolean
 ) => {
-  if (disableParentEnvironmentReuse || !reuseEnvironment()) {
+  if (disableParentEnvironmentReuse || !ɵreuseEnvironment()) {
     (window as any).__ng_dynamic_mf_env__ = env;
   }
   Object.keys(env).forEach(key => {
@@ -32,8 +31,7 @@ export const initializeEnvironment = (
   });
 };
 
-// @internal
-export const reuseEnvironment = () => {
+export const ɵreuseEnvironment = () => {
   const existingEnv = (window as any).__ng_dynamic_mf_env__;
   if (!existingEnv) {
     return false;

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   combineLatest,
@@ -9,8 +9,6 @@ import {
   Observable,
   startWith,
 } from 'rxjs';
-import { resourceMapper } from '../resource-map';
-import { TranslateService } from './service.type';
 import {
   isAssetResolver,
   TranslationResolver,
@@ -18,6 +16,8 @@ import {
   TranslationResolverSet,
 } from './translation-resolver.type';
 import { TranslationType } from './translations.type';
+import { resourceMapper } from 'ng-dynamic-mf';
+import { TranslateService } from '@ngx-translate/core';
 
 type TranslationResolverState = {
   resolver: TranslationResolver;
@@ -32,29 +32,21 @@ type TranslationStore = {
 /**
  * This service is used to dynamically load translations from different modules.
  * It uses @ngx-translate/core internally, so make sure you have it installed and
- * call setTranslateService() before using this service.
+ * the TranslateModule is imported correctly.
  */
 @Injectable({
   providedIn: 'root',
 })
 export class DynamicTranslationService {
-  private _translateService: TranslateService | null = null;
+  private readonly _translateService = inject(TranslateService);
   private readonly _translationsInvalidated = new BehaviorSubject<void>(undefined);
   private readonly _translationsUpdated = new BehaviorSubject<void>(undefined);
   private readonly _translationStore: TranslationStore = {};
-  private _locale?: string;
+  private _locale =
+    this._translateService.currentLang || this._translateService.defaultLang || 'en';
 
-  /**
-   * This method has to be called before any other method.
-   * @param translateService @ngx-translate/core TranslateService instance to use
-   */
-  public setTranslateService(translateService: TranslateService): void {
-    if (this._translateService) {
-      return;
-    }
-    this._translateService = translateService;
-    this._locale = translateService.currentLang || translateService.defaultLang || 'en';
-    translateService.onLangChange.subscribe(e => {
+  constructor() {
+    this._translateService.onLangChange.subscribe(e => {
       this._locale = e.lang;
       this.invalidateTranslations();
     });
@@ -121,11 +113,6 @@ export class DynamicTranslationService {
     locale: string,
     translationResolver: TranslationResolver
   ) {
-    if (!this._translateService) {
-      throw new Error(
-        'DynamicTranslationService: TranslateService not found. Make sure you have @ngx-translate/core installed and called setTranslateService()'
-      );
-    }
     const translationResolvers = this._translationStore[locale] || [];
     const existing = translationResolvers.find(r => r.key === translationSetIdentifier);
 
@@ -164,12 +151,6 @@ export class DynamicTranslationService {
    * @returns Observable that emits true if the translation set is loaded, false otherwise
    */
   public isTranslationSetLoaded(translationSetIdentifier: string): Observable<boolean> {
-    if (!this._translateService) {
-      throw new Error(
-        'DynamicTranslationService: TranslateService not found. Make sure you have @ngx-translate/core installed and called setTranslateService()'
-      );
-    }
-
     return combineLatest([
       this._translateService.onLangChange.pipe(startWith(undefined)),
       this._translationsUpdated,
@@ -185,12 +166,6 @@ export class DynamicTranslationService {
    * @returns Promise that resolves if the translation set is loaded, never rejects (use isTranslationSetLoaded() to check if the translation set is loaded)
    */
   public async ensureTranslationSetIsLoaded(translationSetIdentifier: string): Promise<void> {
-    if (!this._translateService) {
-      throw new Error(
-        'DynamicTranslationService: TranslateService not found. Make sure you have @ngx-translate/core installed and called setTranslateService()'
-      );
-    }
-
     await firstValueFrom(
       this.isTranslationSetLoaded(translationSetIdentifier).pipe(filter(loaded => loaded))
     );
@@ -225,11 +200,6 @@ export class DynamicTranslationService {
   }
 
   private async loadTranslations() {
-    if (!this._translateService) {
-      throw new Error(
-        'DynamicTranslationService: TranslateService not found. Make sure you have @ngx-translate/core installed and called setTranslateService()'
-      );
-    }
     const locale = this._locale;
     if (!locale) {
       return;

@@ -1,4 +1,9 @@
-import { environment, Environment, initializeEnvironment, reuseEnvironment } from '../environment';
+import {
+  environment,
+  Environment,
+  ɵinitializeEnvironment,
+  ɵreuseEnvironment,
+} from 'ng-dynamic-mf/environment';
 import { ModuleDefinitions } from '../models/module-definitions.type';
 import { loadModule, MfOrNf } from './load-module';
 import { AppStartupSettings, AppStartupSettingsInternal } from './load-module-settings.type';
@@ -42,10 +47,10 @@ export const initializeAppInternal = async (
     Environment,
   ];
   if (doLoadEnvironment) {
-    initializeEnvironment(env, actualSettings.loadEnvironment === 'load');
+    ɵinitializeEnvironment(env, actualSettings.loadEnvironment === 'load');
   }
   if (actualSettings.loadEnvironment === 'reuse') {
-    reuseEnvironment();
+    ɵreuseEnvironment();
   }
 
   if (settings.type === 'host') {
