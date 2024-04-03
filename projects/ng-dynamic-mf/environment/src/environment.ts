@@ -2,6 +2,7 @@ export type Environment = {
   production: boolean;
   [key: string]: any;
 };
+let environmentUpdateCallback: ((environment: Environment) => void) | null = null;
 
 /**
  * import this for all values of the environment.json file
@@ -29,6 +30,7 @@ export const ɵinitializeEnvironment = (
   Object.keys(env).forEach(key => {
     environment[key] = env[key];
   });
+  environmentUpdateCallback?.(environment);
 };
 
 export const ɵreuseEnvironment = () => {
@@ -39,6 +41,7 @@ export const ɵreuseEnvironment = () => {
   Object.keys(existingEnv).forEach(key => {
     environment[key] = existingEnv[key];
   });
+  environmentUpdateCallback?.(environment);
   return true;
 };
 
@@ -75,4 +78,13 @@ export function copyEnvironmentIntoIFrame(iframe: HTMLIFrameElement) {
  */
 export const setEnvironmentValue = (key: string, value: any) => {
   environment[key] = value;
+  environmentUpdateCallback?.(environment);
+};
+
+/**
+ * Registers a callback that is called whenever the environment is updated
+ * @param callback the callback that is called whenever the environment is updated
+ */
+export const registerEnvironmentUpdateCallback = (callback: (environment: Environment) => void) => {
+  environmentUpdateCallback = callback;
 };
