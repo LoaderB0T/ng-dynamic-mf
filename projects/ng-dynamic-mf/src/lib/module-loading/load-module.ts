@@ -17,10 +17,17 @@ export const loadModule = async (
   const remoteEntryFileName = mfOrNf === 'nf' ? 'remoteEntry.json' : 'remoteEntry.js';
 
   const hash = moduleToLoad.hash ? `?${moduleToLoad.hash}` : '';
-  const loadedModule = await loadRemoteModule({
-    exposedModule: './Module',
-    remoteEntry: `${join(moduleToLoad.url, remoteEntryFileName)}${hash}`,
-  });
+
+  let loadedModule: any;
+  try {
+    loadedModule = await loadRemoteModule({
+      exposedModule: './Module',
+      remoteEntry: `${join(moduleToLoad.url, remoteEntryFileName)}${hash}`,
+    });
+  } catch (error) {
+    console.error(`Module not loaded: ${moduleToLoad.name}`, error);
+    return;
+  }
   basePaths[moduleToLoad.name] = moduleToLoad.url;
   loadedModules.push(loadedModule[moduleToLoad.ngModuleName]);
   if (moduleToLoad.hasGlobalStyles) {
@@ -34,6 +41,9 @@ export const loadModule = async (
       moduleToLoad.globalStyleBundleName ?? 'global-styles.css'
     );
     link.media = 'all';
+    link.onerror = e => {
+      console.error(`Error loading global styles for module: ${moduleToLoad.name}`, e);
+    };
     head.appendChild(link);
   }
   if (!environment.production) {

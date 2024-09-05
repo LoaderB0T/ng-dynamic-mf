@@ -36,7 +36,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "drop": "cd dist && pnpm publish --no-git-tag-version",
+    "drop": "cd dist && pnpm publish --no-git-checks",
     "postbuild": "cpy README.md dist && ts-node ./build/fix-special-const.ts && pnpm generate-schema",
     "generate-schema": "pnpm typescript-json-schema projects/ng-dynamic-mf/tsconfig.lib.json ModuleDefinitions --strictNullChecks true --required -o schema.json",
     "watch": "ng build --watch --configuration development",
