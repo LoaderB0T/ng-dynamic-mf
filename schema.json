@@ -1,14 +1,15 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "properties": {
+        "$schema": {
+            "description": "The schema of the module definition. Should be 'https://raw.githubusercontent.com/LoaderB0T/ng-dynamic-mf/refs/heads/main/schema.json' or similar.",
+            "type": "string"
+        },
         "modules": {
+            "description": "The modules that should be loaded from the host application.",
             "items": {
                 "description": "Defines a module that should be loaded from the host application.",
                 "properties": {
-                    "$schema": {
-                        "description": "The schema of the module definition. Should be 'https://raw.githubusercontent.com/LoaderB0T/ng-dynamic-mf/refs/heads/main/schema.json' or similar.",
-                        "type": "string"
-                    },
                     "globalStyleBundleName": {
                         "description": "If your filename is not \"global-styles.css\" you can specify the name of the bundle here.\nIf the file gets a hashed suffix by Angular, you can use nx-dynamic-mf to adjust this property with the \"construct\" command.",
                         "type": "string"
@@ -39,7 +40,6 @@
                     }
                 },
                 "required": [
-                    "$schema",
                     "name",
                     "ngModuleName",
                     "url"
@@ -50,6 +50,7 @@
         }
     },
     "required": [
+        "$schema",
         "modules"
     ],
     "type": "object"
