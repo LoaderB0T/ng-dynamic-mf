@@ -50,7 +50,6 @@
         }
     },
     "required": [
-        "$schema",
         "modules"
     ],
     "type": "object"
