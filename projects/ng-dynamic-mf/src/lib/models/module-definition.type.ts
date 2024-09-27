@@ -3,6 +3,10 @@
  */
 export type ModuleDefinition = {
   /**
+   * The schema of the module definition. Should be 'https://raw.githubusercontent.com/LoaderB0T/ng-dynamic-mf/refs/heads/main/schema.json' or similar.
+   */
+  $schema: string;
+  /**
    * The name of the module to be loaded.
    * This name will be also used to resolve paths to assets.
    */
