@@ -44,6 +44,7 @@ export class DynamicTranslationService {
   private readonly _translationStore: TranslationStore = {};
   private _locale =
     this._translateService.currentLang || this._translateService.defaultLang || 'en';
+  private _debugMode = false;
 
   constructor() {
     this._translateService.onLangChange.subscribe(e => {
@@ -54,6 +55,15 @@ export class DynamicTranslationService {
     this._translationsInvalidated.subscribe(() => {
       this.loadTranslations();
     });
+  }
+
+  /**
+   * Sets the debug mode. In debug mode, the translation values are replaced with their keys.
+   * @param debugMode Whether to enable debug mode
+   */
+  public setDebugMode(debugMode: boolean) {
+    this._debugMode = debugMode;
+    this.invalidateTranslations();
   }
 
   /**
@@ -233,7 +243,14 @@ export class DynamicTranslationService {
       if (!translationResolver.loadedTranslations) {
         return;
       }
-      Object.assign(translations, translationResolver.loadedTranslations);
+      if (this._debugMode) {
+        const debugTranslations = this.putTranslationsIntoDebugMode(
+          translationResolver.loadedTranslations
+        );
+        Object.assign(translations, debugTranslations);
+      } else {
+        Object.assign(translations, translationResolver.loadedTranslations);
+      }
     });
     return translations;
   }
@@ -273,5 +290,21 @@ export class DynamicTranslationService {
     const response = await fetch(resourceUrl);
     const content = (await response.json()) as TranslationType;
     return content;
+  }
+
+  private putTranslationsIntoDebugMode(
+    translations: TranslationType,
+    prefix = ''
+  ): TranslationType {
+    const debugTranslations: TranslationType = {};
+    Object.keys(translations).forEach(key => {
+      const value = translations[key];
+      if (typeof value === 'string') {
+        debugTranslations[key] = prefix + key;
+      } else {
+        debugTranslations[key] = this.putTranslationsIntoDebugMode(value, prefix + key + '.');
+      }
+    });
+    return debugTranslations;
   }
 }
