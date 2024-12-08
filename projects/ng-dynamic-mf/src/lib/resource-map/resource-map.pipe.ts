@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { resourceMapper } from './resource-mapper';
 
 @Pipe({
-  name: 'resourceMap'
+  name: 'resourceMap',
 })
 export class ResourceMapPipe implements PipeTransform {
   transform(value: string, moduleName: string): string {
