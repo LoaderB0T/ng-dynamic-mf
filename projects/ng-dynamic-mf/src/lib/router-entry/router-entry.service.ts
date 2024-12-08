@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, Routes } from '@angular/router';
+
 import { findParentOfRouteRecursive } from './find-parent-of-route-recursive';
 import { isAlreadyInConfig } from './is-already-in-config';
 

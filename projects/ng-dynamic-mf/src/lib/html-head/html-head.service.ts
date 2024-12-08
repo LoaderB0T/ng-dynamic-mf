@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+
 import { AddHtmlHeadElementType } from './html-head-types.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HtmlHeadService {
   private readonly _knownElements = new Set<string>();

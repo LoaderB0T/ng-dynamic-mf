@@ -33,6 +33,7 @@
     "native-federation"
   ],
   "scripts": {
+    "lint": "pnpm eslint ./projects/**",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -70,7 +71,7 @@
     "@angular-eslint/template-parser": "^19.0.1",
     "@angular/cli": "^19.0.4",
     "@angular/compiler-cli": "^19.0.3",
-    "@awdware/eslint-config-angular": "^2.0.02",
+    "@awdware/eslint-config-angular": "^2.0.0",
     "@awdware/eslint-config-base": "^2.1.1",
     "@awdware/prettier-config": "^1.0.0",
     "@types/node": "^22.10.1",

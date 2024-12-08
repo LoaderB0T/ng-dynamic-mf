@@ -1,4 +1,6 @@
 import { inject, Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { resourceMapper } from 'ng-dynamic-mf';
 import {
   BehaviorSubject,
   combineLatest,
@@ -9,6 +11,7 @@ import {
   Observable,
   startWith,
 } from 'rxjs';
+
 import {
   isAssetResolver,
   TranslationResolver,
@@ -16,8 +19,6 @@ import {
   TranslationResolverSet,
 } from './translation-resolver.type';
 import { TranslationType } from './translations.type';
-import { resourceMapper } from 'ng-dynamic-mf';
-import { TranslateService } from '@ngx-translate/core';
 
 type TranslationResolverState = {
   resolver: TranslationResolver;
@@ -300,9 +301,9 @@ export class DynamicTranslationService {
     Object.keys(translations).forEach(key => {
       const value = translations[key];
       if (typeof value === 'string') {
-        debugTranslations[key] = prefix + key;
+        debugTranslations[key] = `${prefix}${key}`;
       } else {
-        debugTranslations[key] = this.putTranslationsIntoDebugMode(value, prefix + key + '.');
+        debugTranslations[key] = this.putTranslationsIntoDebugMode(value, `${prefix}${key}.`);
       }
     });
     return debugTranslations;

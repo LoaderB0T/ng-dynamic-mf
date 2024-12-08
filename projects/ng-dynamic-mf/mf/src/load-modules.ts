@@ -1,5 +1,4 @@
 import { loadRemoteModule } from '@angular-architects/module-federation';
-
 import { initializeAppInternal, AppStartupSettings, LoadRemoteModule } from 'ng-dynamic-mf';
 
 export function initializeApp(settings: AppStartupSettings) {
