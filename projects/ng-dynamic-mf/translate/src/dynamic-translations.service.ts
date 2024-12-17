@@ -40,7 +40,7 @@ type TranslationStore = {
 })
 export class DynamicTranslationService {
   private readonly _translateService = inject(TranslateService);
-  private readonly _translationsInvalidated = new BehaviorSubject<void>(undefined);
+  private readonly _translationsInvalidated = new BehaviorSubject<boolean>(false);
   private readonly _translationsUpdated = new BehaviorSubject<void>(undefined);
   private readonly _translationStore: TranslationStore = {};
   private _locale =
@@ -53,7 +53,7 @@ export class DynamicTranslationService {
       this.invalidateTranslations();
     });
 
-    this._translationsInvalidated.subscribe(() => {
+    this._translationsInvalidated.pipe(filter(x => x)).subscribe(() => {
       this.loadTranslations();
     });
   }
@@ -207,7 +207,7 @@ export class DynamicTranslationService {
   }
 
   private invalidateTranslations() {
-    this._translationsInvalidated.next();
+    this._translationsInvalidated.next(true);
   }
 
   private async loadTranslations() {
