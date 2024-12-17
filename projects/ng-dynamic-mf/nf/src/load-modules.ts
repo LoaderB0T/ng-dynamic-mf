@@ -1,6 +1,6 @@
-import type { loadRemoteModule as LRM } from '@angular-architects/native-federation-runtime';
-
 import { initializeAppInternal, AppStartupSettings, LoadRemoteModule } from 'ng-dynamic-mf';
+
+import type { loadRemoteModule as LRM } from '@angular-architects/native-federation-runtime';
 
 type AppStartupSettingsNf = AppStartupSettings &
   (

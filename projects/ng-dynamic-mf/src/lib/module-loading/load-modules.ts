@@ -4,11 +4,12 @@ import {
   ɵinitializeEnvironment,
   ɵreuseEnvironment,
 } from 'ng-dynamic-mf/environment';
-import { ModuleDefinitions } from '../models/module-definitions.type';
+
 import { loadModule, MfOrNf } from './load-module';
 import { AppStartupSettings, AppStartupSettingsInternal } from './load-module-settings.type';
 import { LoadRemoteModule } from './load-remote-module.type';
 import { loadedModules } from './loaded-modules';
+import { ModuleDefinitions } from '../models/module-definitions.type';
 
 export const initializeAppInternal = async (
   settings: AppStartupSettings,

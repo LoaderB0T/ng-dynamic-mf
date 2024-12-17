@@ -1,9 +1,10 @@
-import { basePaths, resourceMapper } from '../resource-map/resource-mapper';
+import { environment } from 'ng-dynamic-mf/environment';
+
+import { LoadRemoteModule } from './load-remote-module.type';
 import { loadedModules } from './loaded-modules';
 import { ModuleDefinition } from '../models/module-definition.type';
+import { basePaths, resourceMapper } from '../resource-map/resource-mapper';
 import { join } from '../utils';
-import { LoadRemoteModule } from './load-remote-module.type';
-import { environment } from 'ng-dynamic-mf/environment';
 
 export type MfOrNf = 'mf' | 'nf';
 

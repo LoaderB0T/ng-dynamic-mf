@@ -4,6 +4,9 @@ export type Environment = {
 };
 let environmentUpdateCallback: ((environment: Environment) => void) | null = null;
 
+type Win = typeof window & { __ng_dynamic_mf_env__: Environment };
+const win = window as Win;
+
 /**
  * import this for all values of the environment.json file
  */
@@ -25,7 +28,7 @@ export const ɵinitializeEnvironment = (
   disableParentEnvironmentReuse?: boolean
 ) => {
   if (disableParentEnvironmentReuse || !ɵreuseEnvironment()) {
-    (window as any).__ng_dynamic_mf_env__ = env;
+    win.__ng_dynamic_mf_env__ = env;
   }
   Object.keys(env).forEach(key => {
     environment[key] = env[key];
@@ -34,7 +37,7 @@ export const ɵinitializeEnvironment = (
 };
 
 export const ɵreuseEnvironment = () => {
-  const existingEnv = (window as any).__ng_dynamic_mf_env__;
+  const existingEnv = win.__ng_dynamic_mf_env__;
   if (!existingEnv) {
     return false;
   }
@@ -50,7 +53,7 @@ export const ɵreuseEnvironment = () => {
  * Will be false if ng-dynamic-mf was not used to bootstrap the app and no environment was set manually
  */
 export function hasEnvironment() {
-  return !!(window as any).__ng_dynamic_mf_env__;
+  return !!win.__ng_dynamic_mf_env__;
 }
 
 /**
@@ -63,9 +66,9 @@ export function copyEnvironmentIntoIFrame(iframe: HTMLIFrameElement) {
   if (!hasEnvironment()) {
     throw new Error('ng-dynamic-mf environment is not available.');
   }
-  const env = (window as any).__ng_dynamic_mf_env__;
+  const env = win.__ng_dynamic_mf_env__;
   if (env) {
-    (iframe.contentWindow as any).__ng_dynamic_mf_env__ = env;
+    (iframe.contentWindow as Win).__ng_dynamic_mf_env__ = env;
   } else {
     console.error('Environment (__ng_dynamic_mf_env__) is not defined');
   }
@@ -76,7 +79,7 @@ export function copyEnvironmentIntoIFrame(iframe: HTMLIFrameElement) {
  * @param key the key of the environment variable
  * @param value the value of the environment variable
  */
-export const setEnvironmentValue = (key: string, value: any) => {
+export const setEnvironmentValue = (key: string, value: unknown) => {
   environment[key] = value;
   environmentUpdateCallback?.(environment);
 };

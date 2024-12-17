@@ -1,4 +1,6 @@
 import { inject, Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { resourceMapper } from 'ng-dynamic-mf';
 import {
   BehaviorSubject,
   combineLatest,
@@ -9,6 +11,7 @@ import {
   Observable,
   startWith,
 } from 'rxjs';
+
 import {
   isAssetResolver,
   TranslationResolver,
@@ -16,8 +19,6 @@ import {
   TranslationResolverSet,
 } from './translation-resolver.type';
 import { TranslationType } from './translations.type';
-import { resourceMapper } from 'ng-dynamic-mf';
-import { TranslateService } from '@ngx-translate/core';
 
 type TranslationResolverState = {
   resolver: TranslationResolver;
@@ -39,7 +40,7 @@ type TranslationStore = {
 })
 export class DynamicTranslationService {
   private readonly _translateService = inject(TranslateService);
-  private readonly _translationsInvalidated = new BehaviorSubject<void>(undefined);
+  private readonly _translationsInvalidated = new BehaviorSubject<boolean>(false);
   private readonly _translationsUpdated = new BehaviorSubject<void>(undefined);
   private readonly _translationStore: TranslationStore = {};
   private _locale =
@@ -52,7 +53,7 @@ export class DynamicTranslationService {
       this.invalidateTranslations();
     });
 
-    this._translationsInvalidated.subscribe(() => {
+    this._translationsInvalidated.pipe(filter(x => x)).subscribe(() => {
       this.loadTranslations();
     });
   }
@@ -206,7 +207,7 @@ export class DynamicTranslationService {
   }
 
   private invalidateTranslations() {
-    this._translationsInvalidated.next();
+    this._translationsInvalidated.next(true);
   }
 
   private async loadTranslations() {
@@ -300,9 +301,9 @@ export class DynamicTranslationService {
     Object.keys(translations).forEach(key => {
       const value = translations[key];
       if (typeof value === 'string') {
-        debugTranslations[key] = prefix + key;
+        debugTranslations[key] = `${prefix}${key}`;
       } else {
-        debugTranslations[key] = this.putTranslationsIntoDebugMode(value, prefix + key + '.');
+        debugTranslations[key] = this.putTranslationsIntoDebugMode(value, `${prefix}${key}.`);
       }
     });
     return debugTranslations;
