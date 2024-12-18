@@ -4,8 +4,16 @@ export type Environment = {
 };
 let environmentUpdateCallback: ((environment: Environment) => void) | null = null;
 
+let win: Window | null = null;
 type Win = typeof window & { __ng_dynamic_mf_env__: Environment };
-const win = window as Win;
+
+function getWindow() {
+  return (win || window) as Win;
+}
+
+export function setWindow(window: Window) {
+  win = window;
+}
 
 /**
  * import this for all values of the environment.json file
@@ -28,7 +36,7 @@ export const ɵinitializeEnvironment = (
   disableParentEnvironmentReuse?: boolean
 ) => {
   if (disableParentEnvironmentReuse || !ɵreuseEnvironment()) {
-    win.__ng_dynamic_mf_env__ = env;
+    getWindow().__ng_dynamic_mf_env__ = env;
   }
   Object.keys(env).forEach(key => {
     environment[key] = env[key];
@@ -37,7 +45,7 @@ export const ɵinitializeEnvironment = (
 };
 
 export const ɵreuseEnvironment = () => {
-  const existingEnv = win.__ng_dynamic_mf_env__;
+  const existingEnv = getWindow().__ng_dynamic_mf_env__;
   if (!existingEnv) {
     return false;
   }
@@ -53,7 +61,7 @@ export const ɵreuseEnvironment = () => {
  * Will be false if ng-dynamic-mf was not used to bootstrap the app and no environment was set manually
  */
 export function hasEnvironment() {
-  return !!win.__ng_dynamic_mf_env__;
+  return !!getWindow().__ng_dynamic_mf_env__;
 }
 
 /**
@@ -66,7 +74,7 @@ export function copyEnvironmentIntoIFrame(iframe: HTMLIFrameElement) {
   if (!hasEnvironment()) {
     throw new Error('ng-dynamic-mf environment is not available.');
   }
-  const env = win.__ng_dynamic_mf_env__;
+  const env = getWindow().__ng_dynamic_mf_env__;
   if (env) {
     (iframe.contentWindow as Win).__ng_dynamic_mf_env__ = env;
   } else {

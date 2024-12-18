@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { inject, Injectable } from '@angular/core';
 
 import { AddHtmlHeadElementType } from './html-head-types.model';
 
@@ -6,11 +7,12 @@ import { AddHtmlHeadElementType } from './html-head-types.model';
   providedIn: 'root',
 })
 export class HtmlHeadService {
+  private readonly _document = inject(DOCUMENT);
   private readonly _knownElements = new Set<string>();
 
   public addElement(element: AddHtmlHeadElementType) {
-    const head = document.getElementsByTagName('head')[0];
-    const el = document.createElement(element.type);
+    const head = this._document.getElementsByTagName('head')[0];
+    const el = this._document.createElement(element.type);
     switch (element.type) {
       case 'link': {
         if (this._knownElements.has(element.href)) {
