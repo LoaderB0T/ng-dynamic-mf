@@ -68,13 +68,14 @@ export function hasEnvironment() {
  * Copies all environment variables into an iframe
  * Make sure to call this mehtod before the angular app in the iframe is bootstrapped
  * @param iframe the iframe to copy the environment into
- * @throws if the environment is not available. Check with `hasEnvironment()` before calling this method
+ * @param environment optional environment to copy into the iframe. If not provided, the environment from the parent window is used
+ *  * @throws if the environment is not available. Check with `hasEnvironment()` before calling this method
  */
-export function copyEnvironmentIntoIFrame(iframe: HTMLIFrameElement) {
-  if (!hasEnvironment()) {
-    throw new Error('ng-dynamic-mf environment is not available.');
+export function copyEnvironmentIntoIFrame(iframe: HTMLIFrameElement, environment?: Environment) {
+  if (!hasEnvironment() && !environment) {
+    throw new Error('ng-dynamic-mf environment is not available and no environment was provided');
   }
-  const env = getWindow().__ng_dynamic_mf_env__;
+  const env = environment ?? getWindow().__ng_dynamic_mf_env__;
   if (env) {
     (iframe.contentWindow as Win).__ng_dynamic_mf_env__ = env;
   } else {
