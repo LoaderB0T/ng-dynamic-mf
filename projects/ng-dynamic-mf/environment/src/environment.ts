@@ -90,6 +90,8 @@ export function copyEnvironmentIntoIFrame(iframe: HTMLIFrameElement, environment
  */
 export const setEnvironmentValue = (key: string, value: unknown) => {
   environment[key] = value;
+  getWindow().__ng_dynamic_mf_env__ ??= { production: false };
+  getWindow().__ng_dynamic_mf_env__[key] = value;
   environmentUpdateCallback?.(environment);
 };
 
