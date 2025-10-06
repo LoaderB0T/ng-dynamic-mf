@@ -49,6 +49,9 @@ export class DynamicTranslationService {
 
   constructor() {
     this._translateService.onLangChange.subscribe(e => {
+      if (this._locale === e.lang) {
+        return;
+      }
       this._locale = e.lang;
       this.invalidateTranslations();
     });
