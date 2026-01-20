@@ -1,2 +1,3 @@
 export * from './dynamic-translations.service';
 export * from './translation-resolver.type';
+export * from './translations.type';
